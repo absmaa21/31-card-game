@@ -1,0 +1,38 @@
+[gd_scene load_steps=2 format=3 uid="uid://mhkxfrdxhprx"]
+
+[ext_resource type="Script" uid="uid://cw21gei28i5ib" path="res://scenes/ui/lobby_button.gd" id="1_wqwn6"]
+
+[node name="LobbyButton" type="MarginContainer"]
+offset_right = 288.0
+offset_bottom = 39.0
+size_flags_horizontal = 0
+script = ExtResource("1_wqwn6")
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Button"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 280.0
+offset_bottom = 31.0
+theme_override_constants/separation = 16
+
+[node name="LobbyName" type="RichTextLabel" parent="Button/HBoxContainer"]
+layout_mode = 2
+text = "lobby_name"
+fit_content = true
+autowrap_mode = 0
+
+[node name="LobbyMode" type="RichTextLabel" parent="Button/HBoxContainer"]
+layout_mode = 2
+text = "lobby_mode"
+fit_content = true
+autowrap_mode = 0
+
+[node name="PlayerCount" type="RichTextLabel" parent="Button/HBoxContainer"]
+layout_mode = 2
+text = "12 / 12"
+fit_content = true
+autowrap_mode = 0

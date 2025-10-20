@@ -1,0 +1,32 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="31 Card Game"
+run/main_scene="uid://bi4yflohrtu1r"
+config/features=PackedStringArray("4.6", "GL Compatibility")
+config/icon="res://icon.svg"
+
+[autoload]
+
+SteamUser="*res://services/SteamUser.gd"
+LobbyManager="*res://services/LobbyManager.gd"
+
+[rendering]
+
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+
+[steam]
+
+initialization/app_id=480
+initialization/initialize_on_startup=true
+initialization/embed_callbacks=false
