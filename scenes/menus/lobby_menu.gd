@@ -10,7 +10,10 @@ class_name LobbyMenu
 func _ready() -> void:
 	Glob.lobby_manager.lobby_members_updated.connect(_on_lobby_members_updated)
 	leave_lobby_button.pressed.connect(Glob.lobby_manager.leave_lobby)
-	Steam.lobby_data_update.connect(_on_lobby_data_update)
+	Glob.lobby_manager.lobby_data_updated.connect(_on_lobby_data_updated)
+
+	for key: String in Glob.lobby_manager.lobby_data.keys():
+		_on_lobby_data_updated(key, Glob.lobby_manager.lobby_data.get(key))
 
 
 func _on_lobby_members_updated(members: Array[LobbyMember]) -> void:
@@ -22,8 +25,6 @@ func _on_lobby_members_updated(members: Array[LobbyMember]) -> void:
 		label.text = "%s (%d)" % [member.username, member.id]
 
 
-func _on_lobby_data_update(_success: int, lobby_id: int, _member_id: int) -> void:
-	if lobby_id != Glob.lobby_manager.lobby_id:
-		push_error("Lobby ids are not matching!")
-		return
-	lobby_name_field.text = Glob.lobby_manager.get_lobby_data("name")
+func _on_lobby_data_updated(key: String, value: String) -> void:
+	if key == "lobby_name":
+		lobby_name_field.text = value

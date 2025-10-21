@@ -21,6 +21,8 @@ func _ready() -> void:
 	Steam.join_requested.connect(_on_lobby_join_requested)
 	Steam.persona_state_change.connect(_on_persona_change)
 	Steam.lobby_chat_update.connect(_on_lobby_update)
+	Steam.lobby_match_list.connect(lobby_match_list.emit)
+	Steam.lobby_data_update.connect(_on_steam_lobby_data_update)
 
 	name = "SteamLobbyManager"
 	check_join_via_command_line()
@@ -62,6 +64,7 @@ func leave_lobby() -> void:
 		if this_member.steam_id != Steam.getSteamID():
 			Steam.closeP2PSessionWithUser(this_member.steam_id)
 	lobby_members.clear()
+	lobby_left.emit()
 
 
 func request_lobby_list() -> void:
@@ -98,6 +101,16 @@ func set_lobby_data(key: String, value: String) -> void:
 	Steam.setLobbyData(lobby_id, key, value)
 
 
+func get_all_lobby_data() -> Dictionary[String, String]:
+	var raw_data: Dictionary = Steam.getAllLobbyData(lobby_id)
+	var data: Dictionary[String, String] = {}
+	for key: int in raw_data.keys():
+		var data_key: String = raw_data.get(key).get("key")
+		var data_value: String = raw_data.get(key).get("value")
+		data.set(data_key, data_value)
+	return data
+
+
 func _on_lobby_created(connection: int, this_lobby_id: int) -> void:
 	if connection != 1: return
 	lobby_id = this_lobby_id
@@ -105,19 +118,18 @@ func _on_lobby_created(connection: int, this_lobby_id: int) -> void:
 
 	# Should be done by default, but just in case
 	Steam.setLobbyJoinable(lobby_id, true)
-	Steam.setLobbyData(lobby_id, "name", "%s's lobby" % Steam.getPersonaName())
-	Steam.setLobbyData(lobby_id, "mode", "31 Cards")
-	Steam.setLobbyData(lobby_id, "max_players", str(lobby_members_max))
 
 	# Allow P2P connections to fallback to being relayed through Steam if needed
 	var set_relay: bool = Steam.allowP2PPacketRelay(true)
 	print_debug("Allowing Steam to be relay backup: %s" % set_relay)
+	lobby_created.emit()
 
 
 func _on_lobby_joined(this_lobby_id: int, _permissions: int, _locked: bool, response: int) -> void:
 	if response == Steam.CHAT_ROOM_ENTER_RESPONSE_SUCCESS:
 		lobby_id = this_lobby_id
 		make_p2p_handshake()
+		lobby_joined.emit()
 
 	else:
 		var fail_reason: String
@@ -160,3 +172,12 @@ func _on_lobby_update(_this_lobby_id: int, change_id: int, _making_change_id: in
 		_: print_debug("%s did... something (%d)" % [changer_name, changer_state])
 
 	refresh_lobby_members()
+
+
+func _on_steam_lobby_data_update(_success: int, _id: int, _member_id: int) -> void:
+	var new_lobby_data: Dictionary = get_all_lobby_data()
+	for key: String in new_lobby_data.keys():
+		var value: String = new_lobby_data.get(key)
+		if value != lobby_data.get(key):
+			lobby_data.set(key, value)
+			lobby_data_updated.emit(key, value)
