@@ -4,7 +4,10 @@ class_name GodotLobbyManager
 
 const PORT: int = 8812
 
-var peer: ENetMultiplayerPeer
+var peer: MultiplayerPeer:
+	set(value):
+		peer = value
+		multiplayer.multiplayer_peer = peer
 var lobby_data: Dictionary[String, String] = {}
 
 

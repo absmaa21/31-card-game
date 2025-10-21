@@ -5,12 +5,16 @@ class_name SteamLobbyManager
 func _ready() -> void:
 	var init_response: Dictionary = Steam.steamInitEx(480, true)
 	print("Steam Init response: %s " % init_response)
-	if init_response.has("verbal"):
-		if init_response.get("verbal") != "":
-			push_error("Error while initalizing steam: %s" % init_response.get("verbal"))
-	else:
+	if not init_response.has("verbal"):
 		push_error("Response of Steam.steamInitEx has no field 'verbal'!")
-		get_tree().quit()
+		return
+
+	if init_response.get("verbal") != "":
+		if init_response.get("status") == 2:
+			push_error("Steam is not open!")
+		else:
+			push_error("Error while initalizing steam: %s" % init_response.get("verbal"))
+		return
 
 	Steam.lobby_created.connect(_on_lobby_created)
 	Steam.lobby_joined.connect(_on_lobby_joined)
