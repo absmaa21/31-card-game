@@ -7,9 +7,10 @@ const LOBBY_MENU: PackedScene = preload("uid://brnkgd403v5xi")
 signal scene_changed(type: SceneType)
 
 enum SceneType {
+	MAIN_MENU,
 	LOBBY_LIST,
-	LOBBY,
-	GAME
+	IN_LOBBY,
+	IN_GAME
 }
 
 @onready var current_scene: Node = $CurrentScene
@@ -37,7 +38,7 @@ func change_scene(type: SceneType) -> void:
 func get_scene_by_type(type: SceneType) -> PackedScene:
 	match type:
 		SceneType.LOBBY_LIST: return MULTIPLAYER_MENU
-		SceneType.LOBBY: return LOBBY_MENU
+		SceneType.IN_LOBBY: return LOBBY_MENU
 
 	push_warning("SceneType %d has no PackedScene connected!" % type)
 	return null

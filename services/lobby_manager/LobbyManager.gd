@@ -9,7 +9,7 @@ signal initialized
 var lobby_id: int = 0:
 	set(value):
 		lobby_id = value
-		Glob.game_manager.change_scene(GameManager.SceneType.LOBBY if is_lobby_id_valid() else GameManager.SceneType.LOBBY_LIST)
+		Glob.game_manager.change_scene(GameManager.SceneType.IN_LOBBY if is_lobby_id_valid() else GameManager.SceneType.LOBBY_LIST)
 		refresh_lobby_members()
 var lobby_members: Array[LobbyMember] = []
 var lobby_members_max: int = 8
