@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://dcr6afgf5eafc"]
+
+[node name="Splash" type="CanvasLayer" unique_id=1045497775]
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=1908129847]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CenterContainer" unique_id=1965282995]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 64
+text = "Loading ..."
+fit_content = true
+autowrap_mode = 0

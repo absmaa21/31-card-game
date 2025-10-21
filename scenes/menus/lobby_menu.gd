@@ -8,8 +8,8 @@ class_name LobbyMenu
 
 
 func _ready() -> void:
-	LobbyManager.lobby_members_updated.connect(_on_lobby_members_updated)
-	leave_lobby_button.pressed.connect(LobbyManager.leave_lobby)
+	Glob.lobby_manager.lobby_members_updated.connect(_on_lobby_members_updated)
+	leave_lobby_button.pressed.connect(Glob.lobby_manager.leave_lobby)
 	Steam.lobby_data_update.connect(_on_lobby_data_update)
 
 
@@ -19,11 +19,11 @@ func _on_lobby_members_updated(members: Array[LobbyMember]) -> void:
 
 	for member: LobbyMember in members:
 		var label: RichTextLabel = RichTextLabel.new()
-		label.text = "%s (%d)" % [member.steam_name, member.steam_id]
+		label.text = "%s (%d)" % [member.username, member.id]
 
 
 func _on_lobby_data_update(_success: int, lobby_id: int, _member_id: int) -> void:
-	if lobby_id != LobbyManager.lobby_id:
+	if lobby_id != Glob.lobby_manager.lobby_id:
 		push_error("Lobby ids are not matching!")
 		return
-	lobby_name_field.text = LobbyManager.get_lobby_data("name")
+	lobby_name_field.text = Glob.lobby_manager.get_lobby_data("name")

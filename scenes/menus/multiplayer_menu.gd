@@ -11,11 +11,11 @@ const LOBBY_BUTTON = preload("uid://mhkxfrdxhprx")
 
 
 func _ready() -> void:
-	LobbyManager.request_lobby_list()
+	Glob.lobby_manager.request_lobby_list()
 	lobby_count.text = "No lobbies found"
 
-	lobby_list_interval.timeout.connect(LobbyManager.request_lobby_list)
-	create_lobby_button.pressed.connect(LobbyManager.create_lobby)
+	lobby_list_interval.timeout.connect(Glob.lobby_manager.request_lobby_list)
+	create_lobby_button.pressed.connect(Glob.lobby_manager.create_lobby)
 	Steam.lobby_match_list.connect(_on_lobby_match_list)
 
 

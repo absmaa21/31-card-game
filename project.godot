@@ -11,14 +11,17 @@ config_version=5
 [application]
 
 config/name="31 Card Game"
-run/main_scene="uid://bi4yflohrtu1r"
+run/main_scene="uid://dcr6afgf5eafc"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="res://icon.svg"
 
 [autoload]
 
 Glob="*res://services/Glob.gd"
-PlayerData="*res://LobbyMember.gd"
+
+[debug]
+
+gdscript/warnings/unused_signal=0
 
 [rendering]
 
@@ -29,4 +32,4 @@ renderer/rendering_method.mobile="gl_compatibility"
 
 initialization/app_id=480
 initialization/initialize_on_startup=false
-initialization/embed_callbacks=true
+initialization/embed_callbacks=false

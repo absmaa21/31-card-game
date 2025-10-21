@@ -3,6 +3,15 @@ class_name SteamLobbyManager
 
 
 func _ready() -> void:
+	var init_response: Dictionary = Steam.steamInitEx(480, true)
+	print("Steam Init response: %s " % init_response)
+	if init_response.has("verbal"):
+		if init_response.get("verbal") != "":
+			push_error("Error while initalizing steam: %s" % init_response.get("verbal"))
+	else:
+		push_error("Response of Steam.steamInitEx has no field 'verbal'!")
+		get_tree().quit()
+
 	Steam.lobby_created.connect(_on_lobby_created)
 	Steam.lobby_joined.connect(_on_lobby_joined)
 	Steam.join_requested.connect(_on_lobby_join_requested)
@@ -10,6 +19,7 @@ func _ready() -> void:
 	Steam.lobby_chat_update.connect(_on_lobby_update)
 
 	check_join_via_command_line()
+	initialized.emit()
 
 
 ## This is important if the player is accepting a Steam invite or Joins the Game via the friends list and doesn't have the game open.
@@ -24,7 +34,9 @@ func check_join_via_command_line() -> void:
 
 
 func create_lobby() -> void:
-	if not is_lobby_id_valid(): return
+	if is_lobby_id_valid():
+		push_warning("Cannot create a lobby if already connected to a lobby!")
+		return
 	Steam.createLobby(Steam.LOBBY_TYPE_FRIENDS_ONLY, lobby_members_max)
 
 
@@ -128,7 +140,7 @@ func _on_lobby_join_requested(this_lobby_id: int, friend_id: int) -> void:
 func _on_persona_change(this_steam_id: int, _flag: int) -> void:
 	if not is_lobby_id_valid(): return
 	print_debug("A user (%s) had information change. Update the lobby members ..." % this_steam_id)
-	get_lobby_members()
+	refresh_lobby_members()
 
 
 func _on_lobby_update(_this_lobby_id: int, change_id: int, _making_change_id: int, changer_state: int) -> void:
@@ -142,4 +154,4 @@ func _on_lobby_update(_this_lobby_id: int, change_id: int, _making_change_id: in
 		Steam.CHAT_MEMBER_STATE_CHANGE_DISCONNECTED: print("%s has closed the game" % changer_name)
 		_: print_debug("%s did... something (%d)" % [changer_name, changer_state])
 
-	get_lobby_members()
+	refresh_lobby_members()

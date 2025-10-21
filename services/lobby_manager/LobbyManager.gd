@@ -4,6 +4,7 @@ class_name LobbyManager
 
 signal lobby_data_updated(key: String, value: String)
 signal lobby_members_updated(members: Array[LobbyMember])
+signal initialized
 
 var lobby_id: int = 0:
 	set(value):
@@ -37,5 +38,5 @@ func set_lobby_data(key: String, value: String)
 
 func is_lobby_id_valid(this_lobby_id: int = lobby_id, check_via_network: bool = false) -> bool:
 	if check_via_network:
-		return this_lobby_id > 0
+		pass
 	return this_lobby_id > 0

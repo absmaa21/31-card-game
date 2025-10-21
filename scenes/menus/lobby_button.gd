@@ -14,4 +14,4 @@ func _ready() -> void:
 
 
 func _on_pressed() -> void:
-	LobbyManager.join_lobby(lobby_id)
+	Glob.lobby_manager.join_lobby(lobby_id, "")
