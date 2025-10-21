@@ -1,15 +1,5 @@
-extends Node
-
-signal lobby_members_updated(members: Array[LobbyMember])
-
-var lobby_id: int = 0:
-	set(value):
-		lobby_id = value
-		Glob.game_manager.change_scene(GameManager.SceneType.LOBBY if lobby_id > 0 else GameManager.SceneType.LOBBY_LIST)
-		get_lobby_members()
-var lobby_members: Array[LobbyMember] = []
-var lobby_members_max: int = 8
-var lobby_vote_kick: bool = false
+extends LobbyManager
+class_name SteamLobbyManager
 
 
 func _ready() -> void:
@@ -20,11 +10,6 @@ func _ready() -> void:
 	Steam.lobby_chat_update.connect(_on_lobby_update)
 
 	check_join_via_command_line()
-
-
-func _process(_delta: float) -> void:
-	# Cannot be done via Project Settings at the moment (20.10.2025)
-	Steam.run_callbacks()
 
 
 ## This is important if the player is accepting a Steam invite or Joins the Game via the friends list and doesn't have the game open.
@@ -39,18 +24,18 @@ func check_join_via_command_line() -> void:
 
 
 func create_lobby() -> void:
-	if lobby_id == 0:
-		Steam.createLobby(Steam.LOBBY_TYPE_FRIENDS_ONLY, lobby_members_max)
+	if not is_lobby_id_valid(): return
+	Steam.createLobby(Steam.LOBBY_TYPE_FRIENDS_ONLY, lobby_members_max)
 
 
-func join_lobby(this_lobby_id: int) -> void:
-	print_debug("Attempting to join lobby %s" % this_lobby_id)
+func join_lobby(id: int, _ip_address: String = "") -> void:
+	print_debug("Attempting to join lobby %s" % id)
 	lobby_members.clear()
-	Steam.joinLobby(this_lobby_id)
+	Steam.joinLobby(id)
 
 
 func leave_lobby() -> void:
-	if lobby_id <= 0:
+	if not is_lobby_id_valid():
 		print_debug("Cannot leave a lobby if player is in no lobby")
 		return
 
@@ -67,9 +52,9 @@ func request_lobby_list() -> void:
 	Steam.requestLobbyList()
 
 
-func get_lobby_members() -> Array[LobbyMember]:
+func refresh_lobby_members() -> void:
 	lobby_members.clear()
-	if lobby_id <= 0: return []
+	if not is_lobby_id_valid(): return
 
 	var num_of_members: int = Steam.getNumLobbyMembers(lobby_id)
 	for index: int in range(num_of_members):
@@ -78,13 +63,22 @@ func get_lobby_members() -> Array[LobbyMember]:
 		lobby_members.append(LobbyMember.new(steam_id, steam_name))
 
 	lobby_members_updated.emit(lobby_members)
-	return lobby_members
 
 
 func make_p2p_handshake() -> void:
 	print_debug("Sending P2P handshake to the lobby ...")
 	var lobby_owner_id: int = Steam.getLobbyOwner(lobby_id)
 	Steam.sendP2PPacket(lobby_owner_id, ['handshake'], Steam.P2PSend.P2P_SEND_RELIABLE)
+
+
+func get_lobby_data(key: String) -> String:
+	if not is_lobby_id_valid(): return ""
+	return Steam.getLobbyData(lobby_id, key)
+
+
+func set_lobby_data(key: String, value: String) -> void:
+	if not is_lobby_id_valid(): return
+	Steam.setLobbyData(lobby_id, key, value)
 
 
 func _on_lobby_created(connection: int, this_lobby_id: int) -> void:
@@ -94,7 +88,7 @@ func _on_lobby_created(connection: int, this_lobby_id: int) -> void:
 
 	# Should be done by default, but just in case
 	Steam.setLobbyJoinable(lobby_id, true)
-	Steam.setLobbyData(lobby_id, "name", "my lobby")
+	Steam.setLobbyData(lobby_id, "name", "%s's lobby" % Steam.getPersonaName())
 	Steam.setLobbyData(lobby_id, "mode", "31 Cards")
 	Steam.setLobbyData(lobby_id, "max_players", str(lobby_members_max))
 
@@ -132,7 +126,7 @@ func _on_lobby_join_requested(this_lobby_id: int, friend_id: int) -> void:
 
 
 func _on_persona_change(this_steam_id: int, _flag: int) -> void:
-	if lobby_id <= 0: return
+	if not is_lobby_id_valid(): return
 	print_debug("A user (%s) had information change. Update the lobby members ..." % this_steam_id)
 	get_lobby_members()
 

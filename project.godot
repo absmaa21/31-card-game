@@ -17,9 +17,8 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-SteamUser="*res://services/SteamUser.gd"
-LobbyManager="*res://services/LobbyManager.gd"
 Glob="*res://services/Glob.gd"
+PlayerData="*res://LobbyMember.gd"
 
 [rendering]
 
@@ -29,5 +28,5 @@ renderer/rendering_method.mobile="gl_compatibility"
 [steam]
 
 initialization/app_id=480
-initialization/initialize_on_startup=true
-initialization/embed_callbacks=false
+initialization/initialize_on_startup=false
+initialization/embed_callbacks=true
