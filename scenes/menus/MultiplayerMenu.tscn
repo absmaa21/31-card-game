@@ -1,0 +1,64 @@
+[gd_scene load_steps=3 format=3 uid="uid://dbwnmtcemd8h7"]
+
+[ext_resource type="Script" uid="uid://dapsd3hm3fkh8" path="res://scenes/menus/multiplayer_menu.gd" id="1_rgco0"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i2x21"]
+content_margin_left = 16.0
+content_margin_top = 16.0
+content_margin_right = 16.0
+content_margin_bottom = 16.0
+bg_color = Color(0, 0, 0, 0.33333334)
+
+[node name="MultiplayerMenu" type="CanvasLayer" unique_id=2098688719]
+script = ExtResource("1_rgco0")
+
+[node name="LobbyListInterval" type="Timer" parent="." unique_id=874876996]
+wait_time = 5.0
+autostart = true
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1863648886]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 64
+theme_override_constants/margin_top = 64
+theme_override_constants/margin_right = 64
+theme_override_constants/margin_bottom = 64
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer" unique_id=1355135473]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_i2x21")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/PanelContainer" unique_id=205672499]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HSplitContainer" parent="MarginContainer/PanelContainer/VBoxContainer" unique_id=1801268431]
+layout_mode = 2
+split_offset = 9999
+
+[node name="LobbyCount" type="RichTextLabel" parent="MarginContainer/PanelContainer/VBoxContainer/HBoxContainer" unique_id=835277396]
+layout_mode = 2
+text = "999 Lobbies found"
+fit_content = true
+autowrap_mode = 0
+vertical_alignment = 2
+
+[node name="CreateLobbyButton" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/HBoxContainer" unique_id=1641948817]
+layout_mode = 2
+text = "Create Lobby"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/PanelContainer/VBoxContainer" unique_id=1610200250]
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/PanelContainer/VBoxContainer" unique_id=278498056]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="LobbyList" type="VBoxContainer" parent="MarginContainer/PanelContainer/VBoxContainer/ScrollContainer" unique_id=1585216957]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 16

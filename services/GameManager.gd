@@ -2,7 +2,8 @@ extends Node
 class_name GameManager
 
 
-const MULTIPLAYER_MENU = preload("uid://dbwnmtcemd8h7")
+const MULTIPLAYER_MENU: PackedScene = preload("uid://dbwnmtcemd8h7")
+const LOBBY_MENU: PackedScene = preload("uid://brnkgd403v5xi")
 
 signal scene_changed(type: SceneType)
 
@@ -16,19 +17,28 @@ enum SceneType {
 
 
 func _ready() -> void:
+	Glob.game_manager = self
 	change_scene(SceneType.LOBBY_LIST)
 
 
 func change_scene(type: SceneType) -> void:
-	print_debug("Trying to change scene to: %s" % type)
+	print("Trying to change scene to: %s" % type)
 
-	var new_scene: Node
-	match type:
-		SceneType.LOBBY_LIST: new_scene = MULTIPLAYER_MENU.instantiate()
-		_: return
+	var packed_scene: PackedScene = get_scene_by_type(type)
+	if not packed_scene: return
+	var new_scene: Node = packed_scene.instantiate()
 
 	for child: Node in current_scene.get_children():
 		child.queue_free()
 
 	current_scene.add_child(new_scene)
 	scene_changed.emit(type)
+
+
+func get_scene_by_type(type: SceneType) -> PackedScene:
+	match type:
+		SceneType.LOBBY_LIST: return MULTIPLAYER_MENU
+		SceneType.LOBBY: return LOBBY_MENU
+
+	push_warning("SceneType %d has no PackedScene connected!" % type)
+	return null

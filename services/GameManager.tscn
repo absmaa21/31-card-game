@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" uid="uid://cl3f40hlwlx1b" path="res://services/GameManager.gd" id="1_ycf6p"]
 
-[node name="GameManager" type="Node"]
+[node name="GameManager" type="Node" unique_id=312229183]
 script = ExtResource("1_ycf6p")
 metadata/_custom_type_script = "uid://cl3f40hlwlx1b"
 
-[node name="CurrentScene" type="Node" parent="."]
+[node name="CurrentScene" type="Node" parent="." unique_id=13324053]
