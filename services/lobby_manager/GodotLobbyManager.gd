@@ -9,6 +9,7 @@ var lobby_data: Dictionary[String, String] = {}
 
 
 func _ready() -> void:
+	name = "GodotLobbyManager"
 	peer = ENetMultiplayerPeer.new()
 	initialized.emit()
 

@@ -18,6 +18,7 @@ func _ready() -> void:
 	Steam.persona_state_change.connect(_on_persona_change)
 	Steam.lobby_chat_update.connect(_on_lobby_update)
 
+	name = "SteamLobbyManager"
 	check_join_via_command_line()
 	initialized.emit()
 

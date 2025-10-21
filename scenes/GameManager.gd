@@ -1,14 +1,12 @@
 extends Node
 class_name GameManager
 
-const SPLASH = preload("uid://dcr6afgf5eafc")
 const MULTIPLAYER_MENU: PackedScene = preload("uid://dbwnmtcemd8h7")
 const LOBBY_MENU: PackedScene = preload("uid://brnkgd403v5xi")
 
 signal scene_changed(type: SceneType)
 
 enum SceneType {
-	SPLASH,
 	LOBBY_LIST,
 	LOBBY,
 	GAME
@@ -38,7 +36,6 @@ func change_scene(type: SceneType) -> void:
 
 func get_scene_by_type(type: SceneType) -> PackedScene:
 	match type:
-		SceneType.SPLASH: return SPLASH
 		SceneType.LOBBY_LIST: return MULTIPLAYER_MENU
 		SceneType.LOBBY: return LOBBY_MENU
 
