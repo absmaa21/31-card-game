@@ -102,11 +102,8 @@ func set_lobby_data(key: String, value: String) -> void:
 
 
 func get_all_lobby_data(id: int = lobby_id) -> Dictionary[String, String]:
-	print(id)
-	# todo unicode error while parsing (utf-8) (in GodotSteam source code)
 	var raw_data: Dictionary = Steam.getAllLobbyData(id)
 	var data: Dictionary[String, String] = {}
-	print(raw_data)
 	for key: int in raw_data.keys():
 		var key_data: Dictionary = raw_data.get(key)
 		var data_key: String = key_data.get("key")

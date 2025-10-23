@@ -14,7 +14,9 @@ func _ready() -> void:
 
 
 func _init_lobby_manager() -> void:
-	if OS.has_feature("steam"): lobby_manager = SteamLobbyManager.new()
+	if OS.has_feature("steam"):
+		lobby_manager = SteamLobbyManager.new()
+		print("Using GodotSteam with version %s" % Steam.get_godotsteam_version())
 	else: lobby_manager = GodotLobbyManager.new()
 
 	self.add_child(lobby_manager, true)
