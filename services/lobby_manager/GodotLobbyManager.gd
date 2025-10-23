@@ -66,7 +66,7 @@ func set_lobby_data(key: String, value: String) -> void:
 	_sync_lobby_data.rpc(key, value)
 
 
-func get_all_lobby_data() -> Dictionary[String, String]:
+func get_all_lobby_data(_id: int) -> Dictionary[String, String]:
 	return lobby_data
 
 

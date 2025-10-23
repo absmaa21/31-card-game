@@ -42,7 +42,7 @@ func get_lobby_data(key: String) -> String
 func set_lobby_data(key: String, value: String)
 
 @abstract
-func get_all_lobby_data() -> Dictionary[String, String]
+func get_all_lobby_data(id: int) -> Dictionary[String, String]
 
 func is_lobby_id_valid(this_lobby_id: int = lobby_id, check_via_network: bool = false) -> bool:
 	if check_via_network:

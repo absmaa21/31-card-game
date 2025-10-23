@@ -30,7 +30,7 @@ func _on_lobby_match_list(these_lobbies: Array) -> void:
 
 	var invalid_lobbies: int = 0
 	for this_lobby: int in these_lobbies:
-		var lobby_data: Dictionary = Glob.lobby_manager.get_all_lobby_data()
+		var lobby_data: Dictionary = Glob.lobby_manager.get_all_lobby_data(this_lobby)
 		if not lobby_data.has_all(["lobby_name", "game_mode", "max_players"]):
 			invalid_lobbies += 1
 			continue
