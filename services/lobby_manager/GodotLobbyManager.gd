@@ -4,12 +4,10 @@ class_name GodotLobbyManager
 
 const PORT: int = 8812
 
-var peer: MultiplayerPeer
-
 
 func _ready() -> void:
 	name = "GodotLobbyManager"
-	peer = ENetMultiplayerPeer.new()
+	multiplayer.multiplayer_peer = ENetMultiplayerPeer.new()
 	initialized.emit()
 	multiplayer.peer_connected.connect(_on_peer_connected)
 
@@ -18,10 +16,10 @@ func create_lobby() -> void:
 	if is_lobby_id_valid():
 		push_warning("Cannot create a lobby if already connected to a lobby!")
 		return
-	var err: Error = peer.create_server(PORT, lobby_members_max)
+	var err: Error = multiplayer.multiplayer_peer.create_server(PORT, lobby_members_max)
 	if err == OK:
 		lobby_id = randi()
-		multiplayer.multiplayer_peer = peer
+		multiplayer.multiplayer_peer = multiplayer.multiplayer_peer
 		lobby_created.emit()
 		return
 	push_error("Error while lobby creation. Code %s" % err)
@@ -30,16 +28,16 @@ func create_lobby() -> void:
 func join_lobby(_id: int, ip_address: String) -> void:
 	print_debug("Attempting to join lobby %s" % ip_address)
 	lobby_members.clear()
-	var err: Error = peer.create_client(ip_address, PORT)
+	var err: Error = multiplayer.multiplayer_peer.create_client(ip_address, PORT)
 	if err == OK:
-		multiplayer.multiplayer_peer = peer
+		multiplayer.multiplayer_peer = multiplayer.multiplayer_peer
 		lobby_joined.emit()
 		return
 	push_error("Error while joining lobby %s. Code %s" % [ip_address, err])
 
 
 func leave_lobby() -> void:
-	peer.close()
+	multiplayer.multiplayer_peer.close()
 	lobby_id = 0
 	lobby_members.clear()
 	lobby_data.clear()
