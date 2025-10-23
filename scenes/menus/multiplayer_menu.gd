@@ -2,7 +2,8 @@ extends CanvasLayer
 class_name MultiplayerMenu
 
 
-const LOBBY_BUTTON = preload("uid://mhkxfrdxhprx")
+const USE_LOBBY_CHECK: bool = false
+const LOBBY_BUTTON: PackedScene = preload("uid://mhkxfrdxhprx")
 
 @onready var lobby_list: VBoxContainer = %LobbyList
 @onready var lobby_count: RichTextLabel = %LobbyCount
@@ -31,14 +32,14 @@ func _on_lobby_match_list(these_lobbies: Array) -> void:
 	var invalid_lobbies: int = 0
 	for this_lobby: int in these_lobbies:
 		var lobby_data: Dictionary = Glob.lobby_manager.get_all_lobby_data(this_lobby)
-		if not lobby_data.has_all(["lobby_name", "game_mode", "max_players"]):
+		if USE_LOBBY_CHECK and not lobby_data.has_all(["lobby_name", "game_mode", "max_players"]):
 			invalid_lobbies += 1
 			continue
 
-		var lobby_name: String = lobby_data.get("lobby_name")
-		var lobby_mode: String = lobby_data.get("game_mode")
+		var lobby_name: String = lobby_data.get("lobby_name", "")
+		var lobby_mode: String = lobby_data.get("game_mode", "")
 		var lobby_num_members: int = Steam.getNumLobbyMembers(this_lobby)
-		var lobby_max_players: int = int(lobby_data.get("max_players"))
+		var lobby_max_players: int = int(lobby_data.get("max_players", "0"))
 
 		var button: LobbyButton = LOBBY_BUTTON.instantiate()
 		lobby_list.add_child(button)

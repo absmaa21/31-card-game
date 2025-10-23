@@ -53,6 +53,7 @@ func get_scene_by_type(type: SceneType) -> PackedScene:
 
 func _on_lobby_created() -> void:
 	change_scene(SceneType.IN_LOBBY)
+	Glob.lobby_manager.set_lobby_data("secret", "7aa0acee-d944-4219-977d-54697e7c0431")
 	Glob.lobby_manager.set_lobby_data("lobby_name", "%s's Lobby" % Glob.player_data.username)
 	Glob.lobby_manager.set_lobby_data("game_mode", "31 Cards")
 	Glob.lobby_manager.set_lobby_data("max_players", str(Glob.lobby_manager.lobby_members_max))

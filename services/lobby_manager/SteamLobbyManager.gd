@@ -69,6 +69,7 @@ func leave_lobby() -> void:
 
 func request_lobby_list() -> void:
 	Steam.addRequestLobbyListDistanceFilter(Steam.LOBBY_DISTANCE_FILTER_WORLDWIDE)
+	Steam.addRequestLobbyListStringFilter("secret", "7aa0acee-d944-4219-977d-54697e7c0431", Steam.LOBBY_COMPARISON_EQUAL)
 	Steam.requestLobbyList()
 
 
