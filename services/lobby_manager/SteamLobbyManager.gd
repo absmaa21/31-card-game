@@ -129,6 +129,7 @@ func _on_lobby_created(connection: int, this_lobby_id: int) -> void:
 
 func _on_lobby_joined(this_lobby_id: int, _permissions: int, _locked: bool, response: int) -> void:
 	if response == Steam.CHAT_ROOM_ENTER_RESPONSE_SUCCESS:
+		print("Joined lobby %d" % this_lobby_id)
 		lobby_id = this_lobby_id
 		make_p2p_handshake()
 		lobby_joined.emit()
