@@ -5,21 +5,19 @@ class_name Player31CardGame
 @export var corresponding_id: int:
 	set(value):
 		corresponding_id = value
-		_on_corresponding_id_updated()
+		input_sync.set_multiplayer_authority(corresponding_id)
+
+var base_rot_y: float = 0
 
 @onready var anim_player: AnimationPlayer = $"Barbarian/AnimationPlayer"
 @onready var camera: Camera3D = $Camera3D
 @onready var barbarian: Node3D = $Barbarian
+@onready var input_sync: InputSynchronizer = $InputSynchronizer
 
 
 func _ready() -> void:
-	anim_player.play("Sit_Chair_Pose")
 	corresponding_id = int(name)
-
-
-func _on_corresponding_id_updated() -> void:
-	if not is_node_ready(): return
-	set_multiplayer_authority(corresponding_id)
-	if is_multiplayer_authority():
+	anim_player.play("Sit_Chair_Pose")
+	if corresponding_id == multiplayer.get_unique_id():
 		camera.make_current()
 		barbarian.visible = false

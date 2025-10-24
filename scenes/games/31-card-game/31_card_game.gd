@@ -40,6 +40,7 @@ func create_players() -> void:
 		players.add_child(player, true)
 		player.global_position = spawn_point.global_position
 		player.rotation_degrees.y = spawn_point.rotation_degrees.y - 90
+		player.base_rot_y = player.camera.rotation.y
 
 	print("All players created.")
 
