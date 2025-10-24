@@ -4,8 +4,6 @@ class_name GodotLobbyManager
 
 const PORT: int = 8812
 
-var peer: ENetMultiplayerPeer
-
 
 func _ready() -> void:
 	name = "GodotLobbyManager"
@@ -56,6 +54,7 @@ func request_lobby_list() -> void:
 
 func refresh_lobby_members() -> void:
 	lobby_members.clear()
+	lobby_members.append(Glob.player_data)
 	for id: int in multiplayer.get_peers():
 		lobby_members.append(LobbyMember.new(id, str(id)))
 

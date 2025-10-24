@@ -18,6 +18,7 @@ var lobby_id: int = 0:
 var lobby_members: Array[LobbyMember] = []
 var lobby_members_max: int = 8
 var lobby_data: Dictionary[String, String] = {}
+var peer: MultiplayerPeer
 
 
 @abstract

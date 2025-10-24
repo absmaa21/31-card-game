@@ -23,7 +23,7 @@ func _on_lobby_members_updated(members: Array[LobbyMember]) -> void:
 	for child: Node in member_list.get_children():
 		child.queue_free()
 
-	for member: LobbyMember in [Glob.player_data] + members:
+	for member: LobbyMember in members:
 		var label: RichTextLabel = RichTextLabel.new()
 		label.fit_content = true
 		label.text = "%s (%d)" % [member.username, member.id]

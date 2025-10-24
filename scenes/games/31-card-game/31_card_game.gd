@@ -28,7 +28,7 @@ func initialize_game() -> void:
 
 
 func create_players() -> void:
-	for member: LobbyMember in [Glob.player_data] + Glob.lobby_manager.lobby_members:
+	for member: LobbyMember in Glob.lobby_manager.lobby_members:
 		var spawn_point: Node3D = get_next_spawn_point()
 		if not spawn_point:
 			push_warning("Not enough spawn points to spawn all players!")

@@ -44,12 +44,14 @@ func create_lobby() -> void:
 	if is_lobby_id_valid():
 		push_warning("Cannot create a lobby if already connected to a lobby!")
 		return
+	peer = SteamMultiplayerPeer.new()
 	Steam.createLobby(Steam.LOBBY_TYPE_FRIENDS_ONLY, lobby_members_max)
 
 
 func join_lobby(id: int, _ip_address: String = "") -> void:
 	print_debug("Attempting to join lobby %s" % id)
 	lobby_members.clear()
+	peer = SteamMultiplayerPeer.new()
 	Steam.joinLobby(id)
 
 
@@ -58,6 +60,7 @@ func leave_lobby() -> void:
 		print_debug("Cannot leave a lobby if player is in no lobby")
 		return
 
+	peer.close()
 	Steam.leaveLobby(lobby_id)
 	lobby_id = 0
 	for this_member: LobbyMember in lobby_members:
