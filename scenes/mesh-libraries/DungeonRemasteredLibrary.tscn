@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://dynkwfohmb47o"]
+
+[ext_resource type="PackedScene" uid="uid://bflmnl7nghvb3" path="res://assets/kaykit-dungeonremastered/floor_tile_small.gltf" id="1_esykx"]
+[ext_resource type="PackedScene" uid="uid://bt0oaoupapowo" path="res://assets/kaykit-dungeonremastered/floor_wood_small.gltf" id="2_cx882"]
+
+[node name="DungeonRemasteredLibrary" type="Node3D" unique_id=1442907251]
+
+[node name="floor_tile_small2" parent="." unique_id=221759863 instance=ExtResource("1_esykx")]
+
+[node name="floor_wood_small2" parent="." unique_id=760477252 instance=ExtResource("2_cx882")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0)

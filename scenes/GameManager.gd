@@ -4,6 +4,7 @@ class_name GameManager
 const MULTIPLAYER_MENU: PackedScene = preload("uid://dbwnmtcemd8h7")
 const LOBBY_MENU: PackedScene = preload("uid://brnkgd403v5xi")
 const DIRECT_CONNECT_MENU = preload("uid://di1tj2dupr7f3")
+const _31_CARD_GAME = preload("uid://d1sldhlmobtoo")
 
 
 signal scene_changed(type: SceneType)
@@ -47,6 +48,7 @@ func get_scene_by_type(type: SceneType) -> PackedScene:
 		SceneType.LOBBY_LIST: return MULTIPLAYER_MENU
 		SceneType.IN_LOBBY: return LOBBY_MENU
 		SceneType.DIRECT_CONNECT: return DIRECT_CONNECT_MENU
+		SceneType.IN_GAME: return _31_CARD_GAME
 
 	push_warning("SceneType %d has no PackedScene connected!" % type)
 	return null
