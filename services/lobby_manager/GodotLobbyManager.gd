@@ -21,6 +21,7 @@ func create_lobby() -> void:
 	var err: Error = peer.create_server(PORT, lobby_members_max)
 	if err == OK:
 		multiplayer.multiplayer_peer = peer
+		Glob.player_data.id = peer.get_unique_id()
 		lobby_id = randi()
 		lobby_created.emit()
 		return
@@ -34,6 +35,7 @@ func join_lobby(_id: int, ip_address: String) -> void:
 	var err: Error = peer.create_client(ip_address, PORT)
 	if err == OK:
 		multiplayer.multiplayer_peer = peer
+		Glob.player_data.id = peer.get_unique_id()
 		lobby_joined.emit()
 		return
 	push_error("Error while joining lobby %s. Code %s" % [ip_address, err])
@@ -41,6 +43,7 @@ func join_lobby(_id: int, ip_address: String) -> void:
 
 func leave_lobby() -> void:
 	multiplayer.multiplayer_peer.close()
+	Glob.player_data.id = 0
 	lobby_id = 0
 	lobby_members.clear()
 	lobby_data.clear()
@@ -76,7 +79,9 @@ func _sync_lobby_data(key: String, value: String) -> void:
 	lobby_data.set(key, value)
 	lobby_data_updated.emit(key, value)
 
+
 func _on_peer_connected(id: int) -> void:
+	refresh_lobby_members()
 	if not multiplayer.is_server(): return
 	for key: String in lobby_data.keys():
 		_sync_lobby_data.rpc_id(id, key, lobby_data.get(key))

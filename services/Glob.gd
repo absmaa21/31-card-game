@@ -26,7 +26,7 @@ func _on_lobby_manager_initialized() -> void:
 	if lobby_manager is SteamLobbyManager:
 		player_data = LobbyMember.new(Steam.getSteamID(), Steam.getPersonaName())
 	else:
-		player_data = LobbyMember.new(multiplayer.get_unique_id(), "Anonymous Godot User")
+		player_data = LobbyMember.new(0, "Anonymous Godot User")
 
 	# Change scene to GameManager
 	get_tree().change_scene_to_file.call_deferred("uid://bi4yflohrtu1r")
