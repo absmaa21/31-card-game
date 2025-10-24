@@ -1,9 +1,21 @@
-[gd_scene load_steps=16 format=4 uid="uid://d1sldhlmobtoo"]
+[gd_scene load_steps=19 format=4 uid="uid://d1sldhlmobtoo"]
 
 [ext_resource type="Script" uid="uid://dds7kqa06k4kh" path="res://scenes/games/31-card-game/31_card_game.gd" id="1_jgqg6"]
 [ext_resource type="Texture2D" uid="uid://cl75nv0c4n04i" path="res://assets/kaykit-dungeonremastered/dungeon_texture.png" id="1_mxwua"]
 [ext_resource type="PackedScene" uid="uid://0cn8wffusqrt" path="res://assets/kaykit-dungeonremastered/chair.gltf" id="3_ew8l4"]
 [ext_resource type="PackedScene" uid="uid://cvi0225x7qp3a" path="res://assets/kaykit-dungeonremastered/table_medium.gltf" id="3_jgqg6"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_jkknw"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_y58dq"]
+sky_material = SubResource("ProceduralSkyMaterial_jkknw")
+
+[sub_resource type="Environment" id="Environment_bkehf"]
+background_mode = 2
+sky = SubResource("Sky_y58dq")
+tonemap_mode = 2
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_chx16"]
 resource_name = "texture"
@@ -125,6 +137,14 @@ metadata/_editor_source_scene = "res://scenes/mesh-libraries/DungeonRemasteredLi
 [node name="31-card-game" type="Node3D" unique_id=730344152]
 script = ExtResource("1_jgqg6")
 
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=2127350297]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+light_energy = 0.2
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=125421569]
+environment = SubResource("Environment_bkehf")
+
 [node name="GridMap" type="GridMap" parent="." unique_id=1635033229]
 mesh_library = SubResource("MeshLibrary_mxwua")
 cell_center_y = false
@@ -148,3 +168,9 @@ transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0
 
 [node name="chair5" parent="SpawnPoints" unique_id=1428034982 instance=ExtResource("3_ew8l4")]
 transform = Transform3D(1.1924881e-08, 0, -1, 0, 1, 0, 1, 0, 1.1924881e-08, 0, 0, 2)
+
+[node name="Players" type="Node3D" parent="." unique_id=1256886321]
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=454367592]
+_spawnable_scenes = PackedStringArray("uid://dehn5gcvf2ex3")
+spawn_path = NodePath("../Players")
