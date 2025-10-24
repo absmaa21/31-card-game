@@ -27,6 +27,7 @@ func _ready() -> void:
 	Glob.lobby_manager.lobby_left.connect(_on_lobby_left)
 
 
+@rpc("call_local")
 func change_scene(type: SceneType) -> void:
 	print("Trying to change scene to: %s" % type)
 

@@ -5,6 +5,7 @@ class_name LobbyMenu
 @onready var member_list: VBoxContainer = %MemberList
 @onready var leave_lobby_button: Button = %LeaveLobbyButton
 @onready var lobby_name_field: TextEdit = %LobbyName
+@onready var start_button: Button = %StartButton
 
 
 func _ready() -> void:
@@ -12,6 +13,7 @@ func _ready() -> void:
 	leave_lobby_button.pressed.connect(Glob.lobby_manager.leave_lobby)
 	Glob.lobby_manager.lobby_data_updated.connect(_on_lobby_data_updated)
 	Glob.lobby_manager.refresh_lobby_members()
+	start_button.pressed.connect(_on_start_button)
 
 	for key: String in Glob.lobby_manager.lobby_data.keys():
 		_on_lobby_data_updated(key, Glob.lobby_manager.lobby_data.get(key))
@@ -31,3 +33,7 @@ func _on_lobby_members_updated(members: Array[LobbyMember]) -> void:
 func _on_lobby_data_updated(key: String, value: String) -> void:
 	if key == "lobby_name":
 		lobby_name_field.text = value
+
+
+func _on_start_button() -> void:
+	Glob.game_manager.change_scene.rpc(GameManager.SceneType.IN_GAME)
