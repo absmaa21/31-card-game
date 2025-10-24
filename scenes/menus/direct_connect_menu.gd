@@ -10,12 +10,17 @@ class_name DirectConnect
 
 func _ready() -> void:
 	text_edit.text = ""
+	error_message.text = ""
 	submit_button.pressed.connect(_on_submit_button_pressed)
 	text_edit.text_changed.connect(_on_input_text_changed)
 	cancel_button.pressed.connect(_on_cancel_pressed)
 
 
 func _on_submit_button_pressed() -> void:
+	if text_edit.text.is_empty():
+		print_debug("Ip to join defaulted to loopback")
+		text_edit.text = "127.0.0.1"
+
 	if text_edit.text.split(".").size() != 4:
 		error_message.text = "Ip format is invalid!"
 		return
