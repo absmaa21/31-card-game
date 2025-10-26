@@ -11,12 +11,14 @@ class_name Player31CardGame
 		if value: spawn_point = get_node(value)
 
 var spawn_point: Marker3D
+var currently_looked_at_card: Card
 
 @onready var anim_player: AnimationPlayer = $"Barbarian/AnimationPlayer"
 @onready var camera: Camera3D = $Camera3D
 @onready var barbarian: Node3D = $Barbarian
 @onready var input_sync: InputSynchronizer = $InputSynchronizer
 @onready var card_hand: CardHand = $CardHand
+@onready var ray_cast: RayCast3D = $Camera3D/RayCast3D
 
 
 func _ready() -> void:
@@ -26,3 +28,24 @@ func _ready() -> void:
 		camera.make_current()
 		barbarian.visible = false
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+
+
+func _input(event: InputEvent) -> void:
+	if Input.mouse_mode != Input.MOUSE_MODE_CAPTURED: return
+	if event.is_action_pressed("interact") and currently_looked_at_card:
+		print(currently_looked_at_card.to_string())
+
+
+func _physics_process(_delta: float) -> void:
+	if ray_cast.get_collider() is Card:
+		if currently_looked_at_card: toggle_card(currently_looked_at_card, false)
+		currently_looked_at_card = null
+		toggle_card(ray_cast.get_collider(), true)
+	elif currently_looked_at_card:
+		toggle_card(currently_looked_at_card, false)
+
+
+func toggle_card(card: Card, value: bool) -> void:
+	var mesh: PlaneMesh = card.front.mesh
+	(mesh.material as StandardMaterial3D).shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED if value else BaseMaterial3D.SHADING_MODE_PER_PIXEL
+	if value: currently_looked_at_card = card
