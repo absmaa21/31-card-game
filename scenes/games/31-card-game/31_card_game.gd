@@ -5,10 +5,16 @@ const CARD: PackedScene = preload("uid://b0q72fruoa26k")
 const CARD_HAND = preload("uid://cage2n7fxbf6i")
 const PLAYER: PackedScene = preload("uid://dehn5gcvf2ex3")
 
+## Id of player which can make its play right now.
+@export var current_player_turn: int
 ## Number of rounds passed. 0 means preparing.
-var round_num: int = 0
+@export var round_num: int = 0
+## The player id which locked the current round.[br]
 ## After a player locks, every other player can make one last turn.
-var round_locked_by: LobbyMember = null
+@export var round_locked_by: int
+## Player Id who started the round.
+@export var first_player: int
+
 var cards_in_deck: Array[Card] = []
 var table_cards: CardHand
 var player_hands: Dictionary[int, CardHand] = {}
@@ -27,10 +33,7 @@ func initialize_game() -> void:
 	if not multiplayer.is_server(): return
 	print("----- GAME '31 Card Game' -----")
 	create_players()
-	create_card_deck()
-	deal_cards_to_players()
-	for player: Player31CardGame in players.get_children():
-		sync_all_cards(int(player.name))
+	next_round()
 
 
 func create_players() -> void:
@@ -50,7 +53,6 @@ func create_players() -> void:
 		player.global_position = spawn_point.global_position
 		player.rotation_degrees.y = spawn_point.rotation_degrees.y - 90
 		player.base_rot_y = player.camera.rotation.y
-		
 
 	print("All players created.")
 
@@ -84,6 +86,7 @@ func deal_cards_to_players() -> void:
 		for i: int in range(3):
 			hand._refresh_card(i)
 		
+		sync_all_cards(player)
 		print("CardHand for %d: %s" % [player, hand.to_string()])
 
 
@@ -106,3 +109,11 @@ func sync_all_cards(player_id: int) -> void:
 		var card: Card = hand.cards.get(i)
 		# This will prevent syncing cards of other players to other clients (prevent cheating)
 		hand._sync_card.rpc_id(player_id, i, card.face, card.symbol)
+
+
+func next_round() -> void:
+	round_num += 1
+	create_card_deck()
+	deal_cards_to_players()
+	first_player = int(players.get_children().get(randi_range(0, players.get_child_count()-1)).name)
+	current_player_turn = first_player

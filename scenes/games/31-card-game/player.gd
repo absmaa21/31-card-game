@@ -4,6 +4,7 @@ class_name Player31CardGame
 
 @export var corresponding_id: int
 @export var base_rot_y: float = 0
+@export var lives: int = 3
 
 @onready var anim_player: AnimationPlayer = $"Barbarian/AnimationPlayer"
 @onready var camera: Camera3D = $Camera3D
