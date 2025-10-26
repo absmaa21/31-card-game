@@ -1,0 +1,35 @@
+[gd_scene load_steps=4 format=3 uid="uid://cage2n7fxbf6i"]
+
+[ext_resource type="Script" uid="uid://bqen5k5ymeekl" path="res://scenes/games/31-card-game/card_hand.gd" id="1_bihrd"]
+[ext_resource type="PackedScene" uid="uid://b0q72fruoa26k" path="res://scenes/games/31-card-game/Card.tscn" id="2_4e606"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_51851"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath(".:associated_id")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+
+[node name="CardHand" type="Node3D"]
+script = ExtResource("1_bihrd")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_51851")
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("uid://b0q72fruoa26k")
+spawn_path = NodePath("../Cards")
+
+[node name="Cards" type="Node3D" parent="."]
+
+[node name="Card" parent="Cards" instance=ExtResource("2_4e606")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.25, 0, 0)
+
+[node name="Card2" parent="Cards" instance=ExtResource("2_4e606")]
+
+[node name="Card3" parent="Cards" instance=ExtResource("2_4e606")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, 0, 0)

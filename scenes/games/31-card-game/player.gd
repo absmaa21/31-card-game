@@ -2,12 +2,8 @@ extends CharacterBody3D
 class_name Player31CardGame
 
 
-@export var corresponding_id: int:
-	set(value):
-		corresponding_id = value
-		input_sync.set_multiplayer_authority(corresponding_id)
-
-var base_rot_y: float = 0
+@export var corresponding_id: int
+@export var base_rot_y: float = 0
 
 @onready var anim_player: AnimationPlayer = $"Barbarian/AnimationPlayer"
 @onready var camera: Camera3D = $Camera3D
@@ -21,3 +17,4 @@ func _ready() -> void:
 	if corresponding_id == multiplayer.get_unique_id():
 		camera.make_current()
 		barbarian.visible = false
+		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED

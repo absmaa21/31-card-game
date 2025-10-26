@@ -11,6 +11,17 @@ var player_data: LobbyMember
 
 func _ready() -> void:
 	_init_lobby_manager()
+	get_window().focus_entered.connect(func() -> void:
+		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED if Glob.game_manager and Glob.game_manager.current_type == GameManager.SceneType.IN_GAME else Input.MOUSE_MODE_VISIBLE
+	)
+	get_window().focus_exited.connect(func() -> void:
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	)
+
+
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_cancel"):
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
 
 func _init_lobby_manager() -> void:

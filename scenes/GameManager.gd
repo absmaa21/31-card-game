@@ -17,6 +17,7 @@ enum SceneType {
 	IN_GAME
 }
 
+var current_type: SceneType
 @onready var current_scene: Node = $CurrentScene
 
 
@@ -39,6 +40,7 @@ func change_scene(type: SceneType) -> void:
 	for child: Node in current_scene.get_children():
 		child.queue_free()
 
+	current_type = type
 	current_scene.add_child(new_scene)
 	scene_changed.emit(type)
 

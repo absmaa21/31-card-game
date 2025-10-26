@@ -1,0 +1,37 @@
+[gd_scene load_steps=7 format=3 uid="uid://b0q72fruoa26k"]
+
+[ext_resource type="Script" uid="uid://dd6kegyr21df8" path="res://scenes/games/31-card-game/card.gd" id="1_7a5sq"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_h6a53"]
+load_path = "res://.godot/imported/Club_Ace.png-d425201309e054c7f96361f44994f318.s3tc.ctex"
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7a5sq"]
+albedo_texture = SubResource("CompressedTexture2D_h6a53")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_psagp"]
+material = SubResource("StandardMaterial3D_7a5sq")
+size = Vector2(0.2, 0.284)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wvfgj"]
+size = Vector3(0.2, 0.001, 0.284)
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_h6a53"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+
+[node name="Card" type="RigidBody3D"]
+freeze = true
+script = ExtResource("1_7a5sq")
+
+[node name="Front" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_psagp")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_wvfgj")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_h6a53")
