@@ -104,4 +104,5 @@ func sync_all_cards(player_id: int) -> void:
 	var hand: CardHand = player_hands.get(player_id)
 	for i: int in range(3):
 		var card: Card = hand.cards.get(i)
+		# This will prevent syncing cards of other players to other clients (prevent cheating)
 		hand._sync_card.rpc_id(player_id, i, card.face, card.symbol)
