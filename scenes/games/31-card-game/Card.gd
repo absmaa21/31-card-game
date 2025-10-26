@@ -21,7 +21,6 @@ func get_card_texture(card: Card = self) -> CompressedTexture2D:
 	face_str = face_str.capitalize()
 	var symbol_str: String = Symbol.keys()[card.symbol]
 	symbol_str = symbol_str.capitalize()
-	print("load texture: %s" % ("res://assets/playing-cards/%s/%s_%s.png" % [Settings.card_color, symbol_str, face_str]))
 	return load("res://assets/playing-cards/%s/%s_%s.png" % [Settings.card_color, symbol_str, face_str])
 
 

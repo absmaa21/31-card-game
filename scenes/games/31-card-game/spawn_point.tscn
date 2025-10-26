@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://cucbj5uactsrd"]
+
+[node name="SpawnPoint" type="Marker3D"]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 0)
+
+[node name="CardPoint" type="Marker3D" parent="."]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -0.7, 1.01, 0)

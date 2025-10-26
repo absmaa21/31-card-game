@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://dehn5gcvf2ex3"]
+[gd_scene load_steps=8 format=3 uid="uid://dehn5gcvf2ex3"]
 
 [ext_resource type="Script" uid="uid://5gt14kw1qsag" path="res://scenes/games/31-card-game/player.gd" id="1_4x1xf"]
 [ext_resource type="PackedScene" uid="uid://7xxtkeo6kqd2" path="res://characters/barbarian.tscn" id="1_cms4r"]
 [ext_resource type="Script" uid="uid://bpglkwxj705rt" path="res://scenes/games/31-card-game/input_synchronizer.gd" id="3_66t23"]
+[ext_resource type="PackedScene" uid="uid://cage2n7fxbf6i" path="res://scenes/games/31-card-game/CardHand.tscn" id="3_up2mq"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_cms4r"]
 
@@ -19,6 +20,12 @@ properties/2/replication_mode = 1
 properties/3/path = NodePath(".:lives")
 properties/3/spawn = true
 properties/3/replication_mode = 1
+properties/4/path = NodePath("CardHand:position")
+properties/4/spawn = true
+properties/4/replication_mode = 1
+properties/5/path = NodePath("CardHand:rotation")
+properties/5/spawn = true
+properties/5/replication_mode = 1
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_66t23"]
 
@@ -34,6 +41,9 @@ shape = SubResource("CapsuleShape3D_cms4r")
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 1.6, 0)
 near = 0.53
+
+[node name="CardHand" parent="." instance=ExtResource("3_up2mq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.93680847, 1.4241469)
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_4x1xf")

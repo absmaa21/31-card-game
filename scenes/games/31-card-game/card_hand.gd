@@ -3,10 +3,9 @@ class_name CardHand
 
 const CARD = preload("uid://b0q72fruoa26k")
 
-## The corresponding [LobbyMember.id] of this CardHand.[br]
-## 0 means assigned to game
-@export var associated_id: int = -1
 var spacing: float = 0
+var origin_pos: Vector3
+var origin_rot: Vector3
 
 var cards: Dictionary[int, Card] = {
 	0: null,
@@ -18,6 +17,8 @@ var cards: Dictionary[int, Card] = {
 
 
 func _ready() -> void:
+	origin_pos = position
+	origin_rot = rotation
 	for child: Node3D in cards_node.get_children():
 		if child.position.x > spacing: spacing = child.position.x
 		child.queue_free()
@@ -30,6 +31,17 @@ func switch_cards(other: CardHand, self_index: int, other_index: int) -> void:
 	self.cards.set(self_index, other_card)
 	other.cards.set(other_index, self_card)
 	_refresh_card(self_index)
+
+
+func _on_cur_player_turn_changed(id: int) -> void:
+	print("%d - %d" % [id, multiplayer.get_unique_id()])
+	if id == multiplayer.get_unique_id():
+		position.y = 1.2
+		rotation.x = 45
+
+	else:
+		position = origin_pos
+		rotation = origin_rot
 
 
 func _to_string() -> String:
