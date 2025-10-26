@@ -4,8 +4,7 @@ class_name CardHand
 const CARD = preload("uid://b0q72fruoa26k")
 
 var spacing: float = 0
-var origin_pos: Vector3
-var origin_rot: Vector3
+@export var parent: Player31CardGame
 
 var cards: Dictionary[int, Card] = {
 	0: null,
@@ -17,8 +16,7 @@ var cards: Dictionary[int, Card] = {
 
 
 func _ready() -> void:
-	origin_pos = position
-	origin_rot = rotation
+	MessageBus.current_player_turn_changed.connect(_on_cur_player_turn_changed)
 	for child: Node3D in cards_node.get_children():
 		if child.position.x > spacing: spacing = child.position.x
 		child.queue_free()
@@ -34,14 +32,14 @@ func switch_cards(other: CardHand, self_index: int, other_index: int) -> void:
 
 
 func _on_cur_player_turn_changed(id: int) -> void:
-	print("%d - %d" % [id, multiplayer.get_unique_id()])
+	if not parent: return
 	if id == multiplayer.get_unique_id():
-		position.y = 1.2
+		global_position.y = parent.spawn_point.get_child(0).global_position.y + 0.2
 		rotation.x = 45
 
 	else:
-		position = origin_pos
-		rotation = origin_rot
+		global_position = parent.spawn_point.get_child(0).global_position
+		global_rotation = parent.spawn_point.get_child(0).global_rotation
 
 
 func _to_string() -> String:

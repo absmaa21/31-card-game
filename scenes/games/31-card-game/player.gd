@@ -5,9 +5,12 @@ class_name Player31CardGame
 @export var corresponding_id: int
 @export var base_rot_y: float = 0
 @export var lives: int = 3
+@export var spawn_point_path: NodePath:
+	set(value):
+		spawn_point_path = value
+		if value: spawn_point = get_node(value)
 
 var spawn_point: Marker3D
-var free_cam_active: bool = false
 
 @onready var anim_player: AnimationPlayer = $"Barbarian/AnimationPlayer"
 @onready var camera: Camera3D = $Camera3D

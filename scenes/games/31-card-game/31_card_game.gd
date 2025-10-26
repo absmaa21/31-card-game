@@ -5,13 +5,11 @@ const CARD: PackedScene = preload("uid://b0q72fruoa26k")
 const CARD_HAND = preload("uid://cage2n7fxbf6i")
 const PLAYER: PackedScene = preload("uid://dehn5gcvf2ex3")
 
-signal current_player_turn_changed(id: int)
-
 ## Id of player which can make its play right now.
 @export var current_player_turn: int:
 	set(value):
 		current_player_turn = value
-		current_player_turn_changed.emit(value)
+		MessageBus.current_player_turn_changed.emit(value)
 ## Number of rounds passed. 0 means preparing.
 @export var round_num: int = 0
 ## The player id which locked the current round.[br]
@@ -48,8 +46,8 @@ func create_players() -> void:
 		
 		var player: Player31CardGame = PLAYER.instantiate()
 		player.name = str(member.id)
-		player.spawn_point = spawn_point
 		players.add_child(player, true)
+		player.spawn_point_path = spawn_point.get_path()
 		player.input_sync.set_multiplayer_authority(member.id)
 		player.global_position = spawn_point.global_position
 		player.rotation_degrees.y = spawn_point.rotation_degrees.y - 90

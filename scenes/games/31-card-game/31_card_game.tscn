@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=4 uid="uid://d1sldhlmobtoo"]
+[gd_scene load_steps=22 format=4 uid="uid://d1sldhlmobtoo"]
 
 [ext_resource type="Script" uid="uid://dds7kqa06k4kh" path="res://scenes/games/31-card-game/31_card_game.gd" id="1_jgqg6"]
 [ext_resource type="Texture2D" uid="uid://cl75nv0c4n04i" path="res://assets/kaykit-dungeonremastered/dungeon_texture.png" id="1_mxwua"]
@@ -136,6 +136,20 @@ item/1/navigation_layers = 1
 item/1/preview = SubResource("ImageTexture_827vw")
 metadata/_editor_source_scene = "res://scenes/mesh-libraries/DungeonRemasteredLibrary.tscn"
 
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_bkehf"]
+properties/0/path = NodePath(".:current_player_turn")
+properties/0/spawn = true
+properties/0/replication_mode = 2
+properties/1/path = NodePath(".:round_num")
+properties/1/spawn = true
+properties/1/replication_mode = 2
+properties/2/path = NodePath(".:round_locked_by")
+properties/2/spawn = true
+properties/2/replication_mode = 2
+properties/3/path = NodePath(".:first_player")
+properties/3/spawn = true
+properties/3/replication_mode = 2
+
 [node name="31-card-game" type="Node3D"]
 script = ExtResource("1_jgqg6")
 
@@ -196,3 +210,6 @@ spawn_path = NodePath("../CardHands")
 [node name="CardHands" type="Node3D" parent="."]
 
 [node name="TableCards" parent="." instance=ExtResource("5_y58dq")]
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_bkehf")
