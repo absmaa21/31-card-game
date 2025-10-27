@@ -1,13 +1,14 @@
-[gd_scene load_steps=27 format=4 uid="uid://d1sldhlmobtoo"]
+[gd_scene load_steps=28 format=4 uid="uid://d1sldhlmobtoo"]
 
 [ext_resource type="Script" uid="uid://dds7kqa06k4kh" path="res://scenes/games/31-card-game/31_card_game.gd" id="1_jgqg6"]
 [ext_resource type="Texture2D" uid="uid://cl75nv0c4n04i" path="res://assets/kaykit-dungeonremastered/dungeon_texture.png" id="1_mxwua"]
-[ext_resource type="Script" uid="uid://03jrbbql51v4" path="res://scenes/games/31-card-game/state_machine.gd" id="2_h137f"]
+[ext_resource type="Script" uid="uid://03jrbbql51v4" path="res://classes/state_machine.gd" id="2_h137f"]
 [ext_resource type="PackedScene" uid="uid://0cn8wffusqrt" path="res://assets/kaykit-dungeonremastered/chair.gltf" id="3_ew8l4"]
 [ext_resource type="PackedScene" uid="uid://cvi0225x7qp3a" path="res://assets/kaykit-dungeonremastered/table_medium.gltf" id="3_jgqg6"]
-[ext_resource type="Script" uid="uid://dtu8hg7xuiaq" path="res://scenes/games/31-card-game/state.gd" id="3_vm8k6"]
+[ext_resource type="Script" uid="uid://dtu8hg7xuiaq" path="res://classes/state.gd" id="3_vm8k6"]
 [ext_resource type="Script" uid="uid://d2vfvmq3tpn5j" path="res://scenes/games/31-card-game/states/prepare.gd" id="3_vxxmy"]
 [ext_resource type="PackedScene" uid="uid://cucbj5uactsrd" path="res://scenes/games/31-card-game/spawn_point.tscn" id="5_bkehf"]
+[ext_resource type="Script" uid="uid://dfsp2if7wwta3" path="res://scenes/games/31-card-game/states/core.gd" id="5_psy8f"]
 [ext_resource type="PackedScene" uid="uid://cage2n7fxbf6i" path="res://scenes/games/31-card-game/CardHand.tscn" id="5_y58dq"]
 [ext_resource type="PackedScene" uid="uid://bbytcmrjjdtan" path="res://scenes/games/31-card-game/button_3d.tscn" id="7_0b8w1"]
 [ext_resource type="Script" uid="uid://ibt5lur27mum" path="res://scenes/games/31-card-game/dealer_buttons.gd" id="7_fuegu"]
@@ -188,8 +189,9 @@ game = NodePath("../..")
 state_machine = NodePath("..")
 metadata/_custom_type_script = "uid://dtu8hg7xuiaq"
 
-[node name="Core" type="Node" parent="StateMachine" node_paths=PackedStringArray("state_machine")]
-script = ExtResource("3_vm8k6")
+[node name="Core" type="Node" parent="StateMachine" node_paths=PackedStringArray("game", "state_machine")]
+script = ExtResource("5_psy8f")
+game = NodePath("../..")
 state_machine = NodePath("..")
 metadata/_custom_type_script = "uid://dtu8hg7xuiaq"
 

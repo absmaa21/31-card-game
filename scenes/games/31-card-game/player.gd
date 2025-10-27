@@ -13,6 +13,12 @@ class_name Player31CardGame
 var spawn_point: Marker3D
 var currently_looked_at_card: Card
 var currently_looked_at_btn: Button3D
+var cur_interactable: Interactable:
+	set(value):
+		if cur_interactable: cur_interactable.is_hovered = false
+		cur_interactable = value
+		cur_interactable.is_hovered = true
+var game: Game_31CardGame
 
 @onready var anim_player: AnimationPlayer = $"Barbarian/AnimationPlayer"
 @onready var camera: Camera3D = $Camera3D
@@ -29,35 +35,3 @@ func _ready() -> void:
 		camera.make_current()
 		barbarian.visible = false
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-
-
-func _input(event: InputEvent) -> void:
-	if Input.mouse_mode != Input.MOUSE_MODE_CAPTURED: return
-	if event.is_action_pressed("interact"):
-		if currently_looked_at_card:
-			print(currently_looked_at_card.to_string())
-		elif currently_looked_at_btn:
-			print("Button %s pressed!" % currently_looked_at_btn.name)
-			currently_looked_at_btn.button.pressed.emit()
-
-
-func _physics_process(_delta: float) -> void:
-	if ray_cast.get_collider() is Card:
-		if currently_looked_at_card: toggle_card(currently_looked_at_card, false)
-		currently_looked_at_card = null
-		toggle_card(ray_cast.get_collider(), true)
-	elif currently_looked_at_card:
-		toggle_card(currently_looked_at_card, false)
-
-	if ray_cast.get_collider() is Button3D:
-		if currently_looked_at_btn: currently_looked_at_btn.set_hover(false)
-		currently_looked_at_btn = ray_cast.get_collider()
-		currently_looked_at_btn.set_hover(true)
-	elif currently_looked_at_btn:
-		currently_looked_at_btn.set_hover(false)
-
-
-func toggle_card(card: Card, value: bool) -> void:
-	var mesh: PlaneMesh = card.front.mesh
-	(mesh.material as StandardMaterial3D).shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED if value else BaseMaterial3D.SHADING_MODE_PER_PIXEL
-	currently_looked_at_card = card if value else null

@@ -25,6 +25,9 @@ properties/4/spawn = true
 properties/4/replication_mode = 1
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_66t23"]
+properties/0/path = NodePath("Camera3D:rotation")
+properties/0/spawn = true
+properties/0/replication_mode = 2
 
 [node name="Player" type="CharacterBody3D"]
 script = ExtResource("1_4x1xf")

@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://ct4d5f7h4kwjp" path="res://scenes/games/31-card-game/button_3d.gd" id="1_75gpa"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_75gpa"]
-size = Vector3(0.8, 0.32, 0.05)
+size = Vector3(0.8, 0.3, 0.05)
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_hclwg"]
 viewport_path = NodePath("Sprite3D/SubViewport")

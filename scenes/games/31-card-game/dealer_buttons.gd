@@ -3,23 +3,29 @@ class_name DealerButtons
 
 @export var game: Game_31CardGame
 
+var init_position_y: float
+
 @onready var keep_button: Button3D = $KeepButton
 @onready var give_button: Button3D = $GiveButton
 
 
 func _ready() -> void:
+	init_position_y = global_position.y
 	keep_button.button.pressed.connect(func() -> void:
 		game.set_dealer_kept_cards.rpc_id(1, true)
-		refresh()
 	)
 	give_button.button.pressed.connect(func() -> void:
 		game.set_dealer_kept_cards.rpc_id(1, false)
-		refresh()
 	)
 
 
 func refresh() -> void:
 	visible = multiplayer.get_unique_id() == game.cur_dealer and game.state_machine.equals_cur_state("prepare")
+	if not visible:
+		global_position.y = -100
+		return
+
+	global_position.y = init_position_y
 	var dealer: Player31CardGame = game.get_player_by_id(game.cur_dealer)
 	look_at(Vector3(
 		dealer.global_position.x,

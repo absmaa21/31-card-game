@@ -1,4 +1,4 @@
-extends RigidBody3D
+extends Interactable
 class_name Card
 
 signal change
@@ -28,3 +28,12 @@ func get_card_texture(card: Card = self) -> CompressedTexture2D:
 func _sync(new_symbol: Symbol, new_face: FaceImage) -> void:
 	symbol = new_symbol
 	face = new_face
+
+
+func _on_is_hovered_changed() -> void:
+	var mesh: PlaneMesh = front.mesh
+	(mesh.material as StandardMaterial3D).shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED if is_hovered else BaseMaterial3D.SHADING_MODE_PER_PIXEL
+
+
+func interact() -> void:
+	print(to_string())

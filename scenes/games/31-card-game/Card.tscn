@@ -15,8 +15,7 @@ size = Vector2(0.2, 0.284)
 [sub_resource type="BoxShape3D" id="BoxShape3D_wvfgj"]
 size = Vector3(0.2, 0.001, 0.284)
 
-[node name="Card" type="RigidBody3D"]
-freeze = true
+[node name="Card" type="Area3D"]
 script = ExtResource("1_7a5sq")
 
 [node name="Front" type="MeshInstance3D" parent="."]

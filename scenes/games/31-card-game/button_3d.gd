@@ -1,9 +1,8 @@
-extends Area3D
+extends Interactable
 class_name Button3D
 
-@onready var button: Button = $Sprite3D/SubViewport/Button
-
 @export var text: String
+@onready var button: Button = $Sprite3D/SubViewport/Button
 
 
 func _ready() -> void:
@@ -11,5 +10,9 @@ func _ready() -> void:
 	button.disabled = true
 
 
-func set_hover(value: bool) -> void:
-	button.disabled = not value
+func interact() -> void:
+	button.pressed.emit()
+
+
+func _on_is_hovered_changed() -> void:
+	button.disabled = not is_hovered

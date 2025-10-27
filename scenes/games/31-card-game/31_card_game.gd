@@ -32,7 +32,7 @@ var cards_in_deck: Array[Card] = []
 @onready var spawn_points: Node3D = $SpawnPoints
 @onready var players: Node3D = $Players
 @onready var state_machine: StateMachine = $StateMachine
-@onready var dealer_buttons: Node3D = $DealerButtons
+@onready var dealer_buttons: DealerButtons = $DealerButtons
 
 
 func _ready() -> void:
@@ -55,6 +55,7 @@ func create_players() -> void:
 		
 		var player: Player31CardGame = PLAYER.instantiate()
 		player.name = str(member.id)
+		player.game = self
 		players.add_child(player, true)
 		player.spawn_point_path = spawn_point.get_path()
 		player.input_sync.set_multiplayer_authority(member.id)
@@ -141,3 +142,5 @@ func set_dealer_kept_cards(kept: bool) -> void:
 	for i: int in range(start_index, players.get_child_count()) + range(0, dealer_index):
 		var player: Player31CardGame = get_player_by_id(get_player_id_by_index(i))
 		deal_cards_to_hand(player.card_hand)
+
+	state_machine.switch_state("core")
