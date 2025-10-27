@@ -6,10 +6,6 @@
 [node name="CardHand" type="Node3D"]
 script = ExtResource("1_bihrd")
 
-[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
-_spawnable_scenes = PackedStringArray("uid://b0q72fruoa26k")
-spawn_path = NodePath("../Cards")
-
 [node name="Cards" type="Node3D" parent="."]
 
 [node name="Card" parent="Cards" instance=ExtResource("2_4e606")]

@@ -37,7 +37,8 @@ func _input(event: InputEvent) -> void:
 		if currently_looked_at_card:
 			print(currently_looked_at_card.to_string())
 		elif currently_looked_at_btn:
-			print("Pressed")
+			print("Button %s pressed!" % currently_looked_at_btn.name)
+			currently_looked_at_btn.button.pressed.emit()
 
 
 func _physics_process(_delta: float) -> void:
