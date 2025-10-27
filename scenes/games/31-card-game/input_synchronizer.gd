@@ -5,7 +5,7 @@ class_name InputSynchronizer
 
 
 func _input(event: InputEvent) -> void:
-	if Input.mouse_mode != Input.MOUSE_MODE_CAPTURED or not is_multiplayer_authority(): return
+	if Input.mouse_mode != Input.MOUSE_MODE_CAPTURED: return
 
 	if event is InputEventMouseMotion:
 		_handle_mouse_motion(event)
@@ -31,6 +31,8 @@ func _handle_mouse_motion(event: InputEventMouseMotion) -> void:
 func _physics_process(_delta: float) -> void:
 	if player.ray_cast.get_collider() is Interactable:
 		player.cur_interactable = player.ray_cast.get_collider()
+	else:
+		player.cur_interactable = null
 
 
 func toggle_card(card: Card, value: bool) -> void:

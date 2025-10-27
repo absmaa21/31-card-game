@@ -136,6 +136,12 @@ func set_dealer_kept_cards(kept: bool) -> void:
 
 	if kept:
 		deal_cards_to_hand(table_cards)
+	else:
+		var dealer: Player31CardGame = get_player_by_id(cur_dealer)
+		for i: int in range(3):
+			table_cards.cards.set(i, dealer.card_hand.remove_card(i))
+			table_cards._refresh_card(i)
+		sync_all_cards(table_cards)
 
 	var dealer_index: int = get_index_of_player_id(cur_dealer)
 	var start_index: int = dealer_index + 1 if kept else dealer_index

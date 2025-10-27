@@ -21,13 +21,20 @@ func _ready() -> void:
 		child.queue_free()
 
 
+func remove_card(index: int) -> Card:
+	var card: Card = cards.get(index)
+	if card.get_parent(): card.get_parent().remove_child(card)
+	return card
+
+
 ## Switches the card of one [class CardHand] with another
 func switch_cards(other: CardHand, self_index: int, other_index: int) -> void:
-	var self_card: Card = self.cards.get(self_index)
-	var other_card: Card = other.cards.get(other_index)
+	var self_card: Card = self.remove_card(self_index)
+	var other_card: Card = other.remove_card(other_index)
 	self.cards.set(self_index, other_card)
 	other.cards.set(other_index, self_card)
 	_refresh_card(self_index)
+	other._refresh_card(other_index)
 
 
 func _on_cur_player_turn_changed(id: int) -> void:

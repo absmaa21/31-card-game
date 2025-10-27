@@ -17,7 +17,7 @@ var cur_interactable: Interactable:
 	set(value):
 		if cur_interactable: cur_interactable.is_hovered = false
 		cur_interactable = value
-		cur_interactable.is_hovered = true
+		if cur_interactable: cur_interactable.is_hovered = true
 var game: Game_31CardGame
 
 @onready var anim_player: AnimationPlayer = $"Barbarian/AnimationPlayer"
@@ -35,3 +35,6 @@ func _ready() -> void:
 		camera.make_current()
 		barbarian.visible = false
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	else:
+		input_sync.set_physics_process(false)
+		input_sync.set_process_input(false)
