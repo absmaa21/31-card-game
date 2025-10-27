@@ -14,7 +14,7 @@ var face: FaceImage
 
 func _to_string() -> String:
 	return "%s %s" % [Symbol.keys()[symbol], FaceImage.keys()[face]]
-
+ 
 
 func get_card_texture(card: Card = self) -> CompressedTexture2D:
 	var face_str: String = FaceImage.keys()[card.face]

@@ -1,4 +1,5 @@
 extends Node3D
+class_name Game_31CardGame
 
 
 const CARD: PackedScene = preload("uid://b0q72fruoa26k")
@@ -52,6 +53,8 @@ func create_players() -> void:
 		player.global_position = spawn_point.global_position
 		player.rotation_degrees.y = spawn_point.rotation_degrees.y - 90
 		player.base_rot_y = player.camera.rotation.y
+		player.card_hand.global_position = player.spawn_point.get_child(0).global_position
+		player.card_hand.global_rotation = player.spawn_point.get_child(0).global_rotation
 
 	print("All players created.")
 
@@ -71,10 +74,6 @@ func deal_cards_to_players() -> void:
 	for player: Player31CardGame in players.get_children():
 		for i: int in range(3): 
 			player.card_hand.cards.set(i, cards_in_deck.pop_at(randi_range(0, cards_in_deck.size()-1)))
-		
-		player.card_hand.global_position = player.spawn_point.get_child(0).global_position
-		player.card_hand.global_rotation = player.spawn_point.get_child(0).global_rotation
-		for i: int in range(3):
 			player.card_hand._refresh_card(i)
 		
 		sync_all_cards(player)

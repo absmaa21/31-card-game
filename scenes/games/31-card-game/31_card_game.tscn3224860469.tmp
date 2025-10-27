@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=4 uid="uid://d1sldhlmobtoo"]
+[gd_scene load_steps=23 format=4 uid="uid://d1sldhlmobtoo"]
 
 [ext_resource type="Script" uid="uid://dds7kqa06k4kh" path="res://scenes/games/31-card-game/31_card_game.gd" id="1_jgqg6"]
 [ext_resource type="Texture2D" uid="uid://cl75nv0c4n04i" path="res://assets/kaykit-dungeonremastered/dungeon_texture.png" id="1_mxwua"]
@@ -7,7 +7,6 @@
 [ext_resource type="PackedScene" uid="uid://cucbj5uactsrd" path="res://scenes/games/31-card-game/spawn_point.tscn" id="5_bkehf"]
 [ext_resource type="PackedScene" uid="uid://cage2n7fxbf6i" path="res://scenes/games/31-card-game/CardHand.tscn" id="5_y58dq"]
 [ext_resource type="PackedScene" uid="uid://bbytcmrjjdtan" path="res://scenes/games/31-card-game/button_3d.tscn" id="7_0b8w1"]
-[ext_resource type="Script" uid="uid://ibt5lur27mum" path="res://scenes/games/31-card-game/buttons.gd" id="7_fuegu"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_jkknw"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -218,12 +217,11 @@ replication_config = SubResource("SceneReplicationConfig_bkehf")
 
 [node name="Buttons" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4074454, 0)
-script = ExtResource("7_fuegu")
 
 [node name="TakeButton" parent="Buttons" instance=ExtResource("7_0b8w1")]
-transform = Transform3D(0.9848077, 0, 0.17364818, 0, 1, 0, -0.17364818, 0, 0.9848077, -0.5, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, 0)
 text = "Take"
 
 [node name="DenyButton" parent="Buttons" instance=ExtResource("7_0b8w1")]
-transform = Transform3D(0.9848077, 0, -0.17364818, 0, 1, 0, 0.17364818, 0, 0.9848077, 0.5, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 0)
 text = "Deny"
