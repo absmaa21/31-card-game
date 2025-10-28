@@ -165,10 +165,11 @@ func on_player_round_finish(from: int, self_index: int, table_index: int) -> voi
 		push_warning("Player %d tried to make a turn. He is not supposed to!")
 		return
 
-	if self_index < 0 and table_index < 0:
+	if self_index < 0 or table_index < 0:
+		print_debug("%d skipped his round" % from)
+		state_machine.switch_state("core")
+	else:
 		var player: Player31CardGame = get_player_by_id(from)
 		player.card_hand.switch_cards(table_cards, self_index, table_index)
 		sync_all_cards(player.card_hand)
 		sync_all_cards(table_cards)
-	else:
-		state_machine.switch_state("core")

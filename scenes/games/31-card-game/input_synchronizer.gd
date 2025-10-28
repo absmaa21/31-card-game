@@ -49,4 +49,7 @@ func toggle_card(card: Card, value: bool) -> void:
 
 
 func _on_skip_round_timeout() -> void:
-	player.game.on_player_round_finish.rpc_id(1, multiplayer.get_unique_id(), -1, -1)
+	if multiplayer.is_server():
+		player.game.on_player_round_finish(multiplayer.get_unique_id(), -1, -1)
+	else:
+		player.game.on_player_round_finish.rpc_id(1, multiplayer.get_unique_id(), -1, -1)
