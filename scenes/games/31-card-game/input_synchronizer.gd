@@ -2,6 +2,7 @@ extends MultiplayerSynchronizer
 class_name InputSynchronizer
 
 @export var player: Player31CardGame
+@onready var skip_round_timer: Timer = $SkipRoundTimer
 
 
 func _input(event: InputEvent) -> void:
@@ -13,6 +14,11 @@ func _input(event: InputEvent) -> void:
 	elif event.is_action_pressed("interact"):
 		if player.cur_interactable:
 			player.cur_interactable.interact()
+
+	elif event.is_action_pressed("skip_round"):
+		skip_round_timer.start()
+	elif event.is_action_released("skip_round"):
+		skip_round_timer.stop()
 
 
 func _handle_mouse_motion(event: InputEventMouseMotion) -> void:
@@ -29,6 +35,7 @@ func _handle_mouse_motion(event: InputEventMouseMotion) -> void:
 
 
 func _physics_process(_delta: float) -> void:
+	if not player.game.player_id_can_do_smth(multiplayer.get_unique_id()): return
 	if player.ray_cast.get_collider() is Interactable:
 		player.cur_interactable = player.ray_cast.get_collider()
 	else:
@@ -39,3 +46,7 @@ func toggle_card(card: Card, value: bool) -> void:
 	var mesh: PlaneMesh = card.front.mesh
 	(mesh.material as StandardMaterial3D).shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED if value else BaseMaterial3D.SHADING_MODE_PER_PIXEL
 	player.currently_looked_at_card = card if value else null
+
+
+func _on_skip_round_timeout() -> void:
+	player.game.on_player_round_finish.rpc_id(1, multiplayer.get_unique_id(), -1, -1)

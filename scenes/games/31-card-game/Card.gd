@@ -6,6 +6,7 @@ signal change
 enum Symbol {SPADE, HEART, DIAMOND, CLUB}
 enum FaceImage {TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, JACK, QUEEN, KING, ACE}
 
+var is_placeholder: bool = true
 var symbol: Symbol
 var face: FaceImage
 
@@ -17,6 +18,7 @@ func _to_string() -> String:
  
 
 func get_card_texture(card: Card = self) -> CompressedTexture2D:
+	if is_placeholder: return null
 	var face_str: String = FaceImage.keys()[card.face]
 	face_str = face_str.capitalize()
 	var symbol_str: String = Symbol.keys()[card.symbol]

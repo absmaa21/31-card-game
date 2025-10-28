@@ -40,7 +40,7 @@ shape = SubResource("CapsuleShape3D_cms4r")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 1.6, 0)
-near = 0.53
+near = 0.2
 
 [node name="RayCast3D" type="RayCast3D" parent="Camera3D"]
 target_position = Vector3(0, 0, -2)
@@ -57,3 +57,9 @@ replication_config = SubResource("SceneReplicationConfig_4x1xf")
 replication_config = SubResource("SceneReplicationConfig_66t23")
 script = ExtResource("3_66t23")
 player = NodePath("..")
+
+[node name="SkipRoundTimer" type="Timer" parent="InputSynchronizer"]
+wait_time = 1.5
+one_shot = true
+
+[connection signal="timeout" from="InputSynchronizer/SkipRoundTimer" to="InputSynchronizer" method="_on_skip_round_timeout"]

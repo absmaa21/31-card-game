@@ -73,6 +73,7 @@ func create_card_deck(min_face_image: Card.FaceImage = Card.FaceImage.SIX) -> vo
 		for face: Card.FaceImage in Card.FaceImage.values():
 			if face < min_face_image: continue
 			var card: Card = CARD.instantiate()
+			card.is_placeholder = false
 			card.symbol = symbol
 			card.face = face
 			cards_in_deck.append(card)
@@ -100,8 +101,7 @@ func get_player_id_by_index(index: int) -> int:
 
 func deal_cards_to_hand(hand: CardHand) -> void:
 	for i: int in range(3):
-		hand.cards.set(i, cards_in_deck.pop_at(randi_range(0, cards_in_deck.size()-1)))
-		hand._refresh_card(i)
+		hand.set_card(i, cards_in_deck.pop_at(randi_range(0, cards_in_deck.size()-1)))
 	sync_all_cards(hand)
 	print("CardHand for %s: %s" % [str(hand.parent.corresponding_id) if hand.parent else "Table", hand.to_string()])
 
@@ -115,9 +115,10 @@ func get_next_spawn_point() -> Node3D:
 func sync_all_cards(hand: CardHand) -> void:
 	for i: int in range(3):
 		var card: Card = hand.cards.get(i)
-		# This will prevent syncing cards of other players to other clients (prevent cheating)
+		# Check if TableCards
 		if hand.parent:
 			if hand.parent.corresponding_id != multiplayer.get_unique_id():
+				# This will prevent syncing cards of other players to other clients (prevent cheating)
 				hand._sync_card.rpc_id(hand.parent.corresponding_id, i, card.face, card.symbol)
 		else:
 			hand._sync_card.rpc(i, card.face, card.symbol)
@@ -130,6 +131,12 @@ func next_player() -> void:
 	current_player_turn = new_player_turn
 
 
+func player_id_can_do_smth(id: int) -> bool:
+	if state_machine.equals_cur_state("prepare") and id == cur_dealer: return true
+	elif state_machine.equals_cur_state("core") and id == current_player_turn: return true
+	return false
+
+
 @rpc("any_peer", "call_local")
 func set_dealer_kept_cards(kept: bool) -> void:
 	dealer_kept_cards = kept
@@ -139,8 +146,8 @@ func set_dealer_kept_cards(kept: bool) -> void:
 	else:
 		var dealer: Player31CardGame = get_player_by_id(cur_dealer)
 		for i: int in range(3):
-			table_cards.cards.set(i, dealer.card_hand.remove_card(i))
-			table_cards._refresh_card(i)
+			var card: Card = dealer.card_hand.remove_card(i)
+			table_cards.set_card(i, card)
 		sync_all_cards(table_cards)
 
 	var dealer_index: int = get_index_of_player_id(cur_dealer)
@@ -150,3 +157,18 @@ func set_dealer_kept_cards(kept: bool) -> void:
 		deal_cards_to_hand(player.card_hand)
 
 	state_machine.switch_state("core")
+
+
+@rpc("any_peer")
+func on_player_round_finish(from: int, self_index: int, table_index: int) -> void:
+	if from != current_player_turn:
+		push_warning("Player %d tried to make a turn. He is not supposed to!")
+		return
+
+	if self_index < 0 and table_index < 0:
+		var player: Player31CardGame = get_player_by_id(from)
+		player.card_hand.switch_cards(table_cards, self_index, table_index)
+		sync_all_cards(player.card_hand)
+		sync_all_cards(table_cards)
+	else:
+		state_machine.switch_state("core")
