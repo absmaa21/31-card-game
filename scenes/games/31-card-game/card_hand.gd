@@ -23,13 +23,15 @@ func _ready() -> void:
 
 func remove_card(index: int) -> Card:
 	var card: Card = cards.get(index)
-	if card and card.get_parent(): card.get_parent().remove_child(card)
+	if card and card.get_parent():
+		cards.set(index, null)
+		card.get_parent().remove_child(card)
 	return card
 
 
 func set_card(index: int, card: Card) -> void:
 	var old_card: Card = cards.get(index)
-	if old_card: old_card.queue_free()
+	if old_card and old_card.get_parent(): old_card.get_parent().remove_child(old_card)
 	cards.set(index, card)
 	_refresh_card(index)
 
@@ -57,7 +59,7 @@ func _to_string() -> String:
 	var string: String = ""
 	for key: int in cards.keys():
 		var card: Card = cards.get(key)
-		if card: string += "card%d(%s) " % [key, card.to_string()]
+		string += "card%d(%s) " % [key, card.to_string() if card else "null"]
 	return string
 
 
@@ -85,5 +87,4 @@ func _sync_card(index: int, face: Card.FaceImage, symbol: Card.Symbol) -> void:
 	new_card.face = face
 	new_card.symbol = symbol
 	new_card.is_placeholder = false
-	cards.set(index, new_card)
-	_refresh_card(index)
+	set_card(index, new_card)
