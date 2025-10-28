@@ -160,9 +160,8 @@ item/1/navigation_layers = 1
 item/1/preview = SubResource("ImageTexture_827vw")
 metadata/_editor_source_scene = "res://scenes/mesh-libraries/DungeonRemasteredLibrary.tscn"
 
-[node name="31-card-game" type="Node3D" node_paths=PackedStringArray("table_cards")]
+[node name="31-card-game" type="Node3D"]
 script = ExtResource("1_jgqg6")
-table_cards = NodePath("TableCards")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)

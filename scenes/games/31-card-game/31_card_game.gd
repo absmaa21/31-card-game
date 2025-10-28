@@ -22,7 +22,6 @@ const MAX_PLAYERS: int = 16
 	set(value):
 		cur_dealer = value
 		dealer_buttons.refresh()
-@export var table_cards: CardHand
 
 ## Defines if the dealer kept the cards.[br]
 ## If null the dealer did not choose yet.
@@ -33,6 +32,7 @@ var cards_in_deck: Array[Card] = []
 @onready var players: Node3D = $Players
 @onready var state_machine: StateMachine = $StateMachine
 @onready var dealer_buttons: DealerButtons = $DealerButtons
+@onready var table_cards: CardHand = $TableCards
 
 
 func _ready() -> void:
