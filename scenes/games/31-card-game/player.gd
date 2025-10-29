@@ -2,6 +2,8 @@ extends CharacterBody3D
 class_name Player31CardGame
 
 
+const HEAD_SMOOTHING: float = 10
+
 @export var corresponding_id: int
 @export var base_rot_y: float = 0
 @export var lives: int = 3
@@ -54,8 +56,8 @@ func _on_cur_player_turn_changed(id: int) -> void:
 		get_window().grab_focus()
 
 
-func _process(_delta: float) -> void:
-	var cam_rot: Vector3 = camera.rotation
-	cam_rot.x *= -1
-	cam_rot.y += deg_to_rad(180)
-	skeleton.set_bone_pose_rotation(head_bone, Quaternion.from_euler(cam_rot))
+func _process(delta: float) -> void:
+	var head_rot: Vector3 = skeleton.get_bone_pose_rotation(head_bone).get_euler()
+	var target_rot: Vector3 = Vector3(camera.rotation.x * -1, camera.rotation.y + deg_to_rad(180), camera.rotation.z)
+	var new_rot: Vector3 = head_rot.move_toward(target_rot, HEAD_SMOOTHING * delta)
+	skeleton.set_bone_pose_rotation(head_bone, Quaternion.from_euler(new_rot))
