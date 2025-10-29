@@ -6,11 +6,22 @@ signal change
 enum Symbol {SPADE, HEART, DIAMOND, CLUB}
 enum FaceImage {TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, JACK, QUEEN, KING, ACE}
 
+var hand: CardHand
 var is_placeholder: bool = true
 var symbol: Symbol
 var face: FaceImage
+var selected: bool = false:
+	set(value):
+		selected = value
+		arrow.visible = selected
 
 @onready var front: MeshInstance3D = $Front
+@onready var arrow: MeshInstance3D = $Arrow
+
+
+func _ready() -> void:
+	hand = get_parent().get_parent()
+	arrow.visible = false
 
 
 func _to_string() -> String:
@@ -38,4 +49,5 @@ func _on_is_hovered_changed() -> void:
 
 
 func interact() -> void:
-	print(to_string())
+	if hand: hand.unselect_all_cards()
+	selected = true

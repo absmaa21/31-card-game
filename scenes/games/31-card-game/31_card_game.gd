@@ -116,11 +116,11 @@ func sync_all_cards(hand: CardHand) -> void:
 	for i: int in range(3):
 		var card: Card = hand.cards.get(i)
 		# Check if TableCards
-		if hand.parent:
+		if hand.parent is Player31CardGame:
 			if hand.parent.corresponding_id != multiplayer.get_unique_id():
 				# This will prevent syncing cards of other players to other clients (prevent cheating)
 				hand._sync_card.rpc_id(hand.parent.corresponding_id, i, card.face, card.symbol)
-		else:
+		elif hand.parent is Game_31CardGame:
 			hand._sync_card.rpc(i, card.face, card.symbol)
 
 

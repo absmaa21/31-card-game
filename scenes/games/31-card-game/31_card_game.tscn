@@ -246,8 +246,9 @@ game = NodePath("..")
 
 [node name="Players" type="Node3D" parent="."]
 
-[node name="TableCards" parent="." instance=ExtResource("5_y58dq")]
+[node name="TableCards" parent="." node_paths=PackedStringArray("parent") instance=ExtResource("5_y58dq")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.01, 0)
+parent = NodePath("..")
 
 [node name="DealerButtons" type="Node3D" parent="." node_paths=PackedStringArray("game")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4074454, 0)

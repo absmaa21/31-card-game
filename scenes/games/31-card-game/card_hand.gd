@@ -4,19 +4,23 @@ class_name CardHand
 const CARD = preload("uid://b0q72fruoa26k")
 
 const SPACING: float = 0.25
-@export var parent: Player31CardGame
+@export var parent: Node3D
 
 var cards: Dictionary[int, Card] = {
 	0: null,
 	1: null,
 	2: null,
 }
+var init_pos: Vector3
+var init_rot: Vector3
 
 @onready var cards_node: Node3D = $Cards
 
 
 func _ready() -> void:
 	MessageBus.current_player_turn_changed.connect(_on_cur_player_turn_changed)
+	init_pos = global_position
+	init_rot = global_rotation
 	for i: int in range(3):
 		set_card(i, cards_node.get_child(i))
 
@@ -44,15 +48,33 @@ func switch_cards(other: CardHand, self_index: int, other_index: int) -> void:
 	other.set_card(other_index, other_card)
 
 
-func _on_cur_player_turn_changed(id: int) -> void:
-	if not parent: return
-	if id == multiplayer.get_unique_id():
-		global_position.y = parent.spawn_point.get_child(0).global_position.y + 0.2
-		rotation.x = 45
+func unselect_all_cards() -> void:
+	for child: Card in cards_node.get_children():
+		child.selected = false
 
-	else:
-		global_position = parent.spawn_point.get_child(0).global_position
-		global_rotation = parent.spawn_point.get_child(0).global_rotation
+
+func _on_cur_player_turn_changed(id: int) -> void:
+	if parent is Game_31CardGame:
+		if id == multiplayer.get_unique_id():
+			global_position.y = init_pos.y + 0.5
+			var player: Player31CardGame = parent.get_player_by_id(id)
+			look_at(player.global_position, Vector3.UP, true)
+			rotation_degrees.x = 90
+		
+		else:
+			global_position = init_pos
+			global_rotation = init_rot
+			unselect_all_cards()
+
+	elif parent is Player31CardGame:
+		if id == multiplayer.get_unique_id():
+			global_position.y = parent.spawn_point.get_child(0).global_position.y + 0.2
+			rotation.x = 45
+		
+		else:
+			global_position = parent.spawn_point.get_child(0).global_position
+			global_rotation = parent.spawn_point.get_child(0).global_rotation
+			unselect_all_cards()
 
 
 func _to_string() -> String:
