@@ -44,8 +44,8 @@ func set_card(index: int, card: Card) -> void:
 func switch_cards(other: CardHand, self_index: int, other_index: int) -> void:
 	var self_card: Card = self.remove_card(self_index)
 	var other_card: Card = other.remove_card(other_index)
-	set_card(self_index, self_card)
-	other.set_card(other_index, other_card)
+	set_card(self_index, other_card)
+	other.set_card(other_index, self_card)
 
 
 func unselect_all_cards() -> void:

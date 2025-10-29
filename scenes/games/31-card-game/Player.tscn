@@ -58,8 +58,8 @@ replication_config = SubResource("SceneReplicationConfig_66t23")
 script = ExtResource("3_66t23")
 player = NodePath("..")
 
-[node name="SkipRoundTimer" type="Timer" parent="InputSynchronizer"]
+[node name="FinishRoundTimer" type="Timer" parent="InputSynchronizer"]
 wait_time = 1.5
 one_shot = true
 
-[connection signal="timeout" from="InputSynchronizer/SkipRoundTimer" to="InputSynchronizer" method="_on_skip_round_timeout"]
+[connection signal="timeout" from="InputSynchronizer/FinishRoundTimer" to="InputSynchronizer" method="finish_round"]
