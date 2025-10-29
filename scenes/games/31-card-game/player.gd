@@ -19,22 +19,25 @@ var cur_interactable: Interactable:
 		cur_interactable = value
 		if cur_interactable: cur_interactable.is_hovered = true
 var game: Game_31CardGame
+var head_bone: int
 
-@onready var anim_player: AnimationPlayer = $"Barbarian/AnimationPlayer"
+@onready var anim_player: AnimationPlayer = $Model/AnimationPlayer
 @onready var camera: Camera3D = $Camera3D
-@onready var barbarian: Node3D = $Barbarian
+@onready var model: Node3D = $Model
 @onready var input_sync: InputSynchronizer = $InputSynchronizer
 @onready var card_hand: CardHand = $CardHand
 @onready var ray_cast: RayCast3D = $Camera3D/RayCast3D
+@onready var skeleton: Skeleton3D = $Model/Root/GeneralSkeleton
 
 
 func _ready() -> void:
 	corresponding_id = int(name)
-	anim_player.play("Sit_Chair_Pose")
+	anim_player.play("Sitting Idle")
+	head_bone = skeleton.find_bone("Head")
 	MessageBus.current_player_turn_changed.connect(_on_cur_player_turn_changed)
 	if corresponding_id == multiplayer.get_unique_id():
 		camera.make_current()
-		barbarian.visible = false
+		model.visible = false
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	else:
 		input_sync.set_physics_process(false)
@@ -45,3 +48,10 @@ func _on_cur_player_turn_changed(id: int) -> void:
 	if id == multiplayer.get_unique_id():
 		get_window().request_attention()
 		get_window().grab_focus()
+
+
+func _process(_delta: float) -> void:
+	var cam_rot: Vector3 = camera.rotation
+	cam_rot.x *= -1
+	cam_rot.y += deg_to_rad(180)
+	skeleton.set_bone_pose_rotation(head_bone, Quaternion.from_euler(cam_rot))

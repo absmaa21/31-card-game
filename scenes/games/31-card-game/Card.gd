@@ -49,5 +49,5 @@ func _on_is_hovered_changed() -> void:
 
 
 func interact() -> void:
-	if hand: hand.unselect_all_cards()
+	hand.unselect_all_cards()
 	selected = true
