@@ -36,6 +36,7 @@ func remove_card(index: int) -> Card:
 func set_card(index: int, card: Card) -> void:
 	var old_card: Card = cards.get(index)
 	if old_card and old_card.get_parent(): old_card.get_parent().remove_child(old_card)
+	card.hand = self
 	cards.set(index, card)
 	_refresh_card(index)
 
