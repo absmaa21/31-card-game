@@ -49,5 +49,6 @@ func _on_is_hovered_changed() -> void:
 
 
 func interact() -> void:
+	var prev_value: bool = selected
 	hand.unselect_all_cards()
-	selected = true
+	selected = not prev_value
