@@ -31,6 +31,7 @@ var game: Game_31CardGame
 func _ready() -> void:
 	corresponding_id = int(name)
 	anim_player.play("Sit_Chair_Pose")
+	MessageBus.current_player_turn_changed.connect(_on_cur_player_turn_changed)
 	if corresponding_id == multiplayer.get_unique_id():
 		camera.make_current()
 		barbarian.visible = false
@@ -38,3 +39,9 @@ func _ready() -> void:
 	else:
 		input_sync.set_physics_process(false)
 		input_sync.set_process_input(false)
+
+
+func _on_cur_player_turn_changed(id: int) -> void:
+	if id == multiplayer.get_unique_id():
+		get_window().request_attention()
+		get_window().grab_focus()

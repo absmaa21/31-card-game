@@ -103,7 +103,7 @@ func deal_cards_to_hand(hand: CardHand) -> void:
 	for i: int in range(3):
 		hand.set_card(i, cards_in_deck.pop_at(randi_range(0, cards_in_deck.size()-1)))
 	sync_all_cards(hand)
-	print("CardHand for %s: %s" % [str(hand.parent.corresponding_id) if hand.parent else "Table", hand.to_string()])
+	print("CardHand for %s: %s" % [str(hand.parent.corresponding_id) if hand.parent is Player31CardGame else "Table", hand.to_string()])
 
 
 func get_next_spawn_point() -> Node3D:
