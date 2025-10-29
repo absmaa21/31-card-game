@@ -62,8 +62,6 @@ func create_players() -> void:
 		player.global_position = spawn_point.global_position
 		player.rotation_degrees.y = spawn_point.rotation_degrees.y - 90
 		player.base_rot_y = player.camera.rotation.y
-		player.card_hand.global_position = player.spawn_point.get_child(0).global_position
-		player.card_hand.global_rotation = player.spawn_point.get_child(0).global_rotation
 
 	print("All players created.")
 
@@ -160,13 +158,18 @@ func set_dealer_kept_cards(kept: bool) -> void:
 
 
 @rpc("any_peer")
-func on_player_round_finish(from: int, self_index: int, table_index: int) -> void:
+func on_player_round_finish(from: int, self_index: int, table_index: int, lock_round: bool = false) -> void:
 	if from != current_player_turn:
 		push_warning("Player %d tried to make a turn. He is not supposed to!")
 		return
 
-	if self_index < 0 or table_index < 0:
+	if lock_round:
+		print_debug("Round locked by %d" % from)
+		round_locked_by = from
+
+	elif self_index < 0 or table_index < 0:
 		print_debug("%d skipped his round" % from)
+
 	else:
 		print_debug("%d switched %d with table %d" % [from, self_index, table_index])
 		var player: Player31CardGame = get_player_by_id(from)

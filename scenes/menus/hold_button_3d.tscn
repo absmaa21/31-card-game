@@ -1,0 +1,93 @@
+[gd_scene load_steps=5 format=3 uid="uid://bqmmy24xoguw8"]
+
+[ext_resource type="Script" uid="uid://b0lnnu3d1qywi" path="res://scenes/menus/hold_button_3d.gd" id="1_7lixg"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_7lixg"]
+size = Vector3(0.8, 0.32, 0.01)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_7lixg"]
+viewport_path = NodePath("Sprite3D/SubViewport")
+
+[sub_resource type="GDScript" id="GDScript_o8fh7"]
+script/source = "extends Control
+class_name HoldButton
+
+const TIMER_SEC: float = 1.5
+
+@onready var button: Button = $Button
+@onready var progress_bar: ProgressBar = $ProgressBar
+@onready var interact_timer: Timer = $InteractTimer
+
+
+func _ready() -> void:
+	set_process(false)
+
+
+func _process(_delta: float) -> void:
+	progress_bar.value = TIMER_SEC / interact_timer.time_left * 100
+
+
+func press() -> void:
+	set_process(true)
+	interact_timer.start(TIMER_SEC)
+	button.button_pressed = true
+
+
+func cancel() -> void:
+	set_process(false)
+	interact_timer.stop()
+	button.button_pressed = false
+	progress_bar.value = 0
+
+
+func _on_timeout() -> void:
+	button.pressed.emit()
+"
+
+[node name="HoldButton3D" type="Area3D"]
+monitoring = false
+script = ExtResource("1_7lixg")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_7lixg")
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+texture = SubResource("ViewportTexture_7lixg")
+
+[node name="SubViewport" type="SubViewport" parent="Sprite3D"]
+size = Vector2i(80, 32)
+
+[node name="HoldButton" type="Control" parent="Sprite3D/SubViewport"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = SubResource("GDScript_o8fh7")
+
+[node name="ProgressBar" type="ProgressBar" parent="Sprite3D/SubViewport/HoldButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+value = 50.0
+show_percentage = false
+
+[node name="Button" type="Button" parent="Sprite3D/SubViewport/HoldButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 12
+toggle_mode = true
+text = "HoldButton"
+
+[node name="InteractTimer" type="Timer" parent="Sprite3D/SubViewport/HoldButton"]
+one_shot = true
+
+[connection signal="timeout" from="Sprite3D/SubViewport/HoldButton/InteractTimer" to="." method="_on_interact_timeout"]

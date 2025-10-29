@@ -2,7 +2,6 @@ extends MultiplayerSynchronizer
 class_name InputSynchronizer
 
 @export var player: Player31CardGame
-@onready var finish_round_timer: Timer = $FinishRoundTimer
 
 
 func _input(event: InputEvent) -> void:
@@ -14,11 +13,6 @@ func _input(event: InputEvent) -> void:
 	elif event.is_action_pressed("interact"):
 		if player.cur_interactable:
 			player.cur_interactable.interact()
-
-	elif event.is_action_pressed("finish_round"):
-		finish_round_timer.start()
-	elif event.is_action_released("finish_round"):
-		finish_round_timer.stop()
 
 
 func _handle_mouse_motion(event: InputEventMouseMotion) -> void:
@@ -46,12 +40,3 @@ func toggle_card(card: Card, value: bool) -> void:
 	var mesh: PlaneMesh = card.front.mesh
 	(mesh.material as StandardMaterial3D).shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED if value else BaseMaterial3D.SHADING_MODE_PER_PIXEL
 	player.currently_looked_at_card = card if value else null
-
-
-func finish_round() -> void:
-	var self_index: int = player.game.get_index_of_selected_card(player.card_hand)
-	var table_index: int = player.game.get_index_of_selected_card(player.game.table_cards)
-	if multiplayer.is_server():
-		player.game.on_player_round_finish(multiplayer.get_unique_id(), self_index, table_index)
-	else:
-		player.game.on_player_round_finish.rpc_id(1, multiplayer.get_unique_id(), self_index, table_index)

@@ -15,6 +15,7 @@ var currently_looked_at_card: Card
 var currently_looked_at_btn: Button3D
 var cur_interactable: Interactable:
 	set(value):
+		if value == cur_interactable: return
 		if cur_interactable: cur_interactable.is_hovered = false
 		cur_interactable = value
 		if cur_interactable: cur_interactable.is_hovered = true
@@ -28,12 +29,14 @@ var head_bone: int
 @onready var card_hand: CardHand = $CardHand
 @onready var ray_cast: RayCast3D = $Camera3D/RayCast3D
 @onready var skeleton: Skeleton3D = $Model/Root/GeneralSkeleton
+@onready var turn_choices: Node3D = $TurnChoices
 
 
 func _ready() -> void:
 	corresponding_id = int(name)
 	anim_player.play("Sitting Idle")
 	head_bone = skeleton.find_bone("Head")
+	turn_choices.visible = false
 	MessageBus.current_player_turn_changed.connect(_on_cur_player_turn_changed)
 	if corresponding_id == multiplayer.get_unique_id():
 		camera.make_current()
@@ -45,6 +48,7 @@ func _ready() -> void:
 
 
 func _on_cur_player_turn_changed(id: int) -> void:
+	turn_choices.visible = id == corresponding_id and id == multiplayer.get_unique_id()
 	if id == multiplayer.get_unique_id():
 		get_window().request_attention()
 		get_window().grab_focus()

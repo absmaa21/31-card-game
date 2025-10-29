@@ -1,9 +1,11 @@
-[gd_scene load_steps=15 format=4 uid="uid://dehn5gcvf2ex3"]
+[gd_scene load_steps=17 format=4 uid="uid://dehn5gcvf2ex3"]
 
 [ext_resource type="Script" uid="uid://5gt14kw1qsag" path="res://scenes/games/31-card-game/player.gd" id="1_4x1xf"]
 [ext_resource type="Script" uid="uid://bpglkwxj705rt" path="res://scenes/games/31-card-game/input_synchronizer.gd" id="3_66t23"]
 [ext_resource type="Texture2D" uid="uid://dd618n7q5aq8r" path="res://assets/kenney-characters/Skins/skaterMaleA.png" id="3_623ke"]
 [ext_resource type="PackedScene" uid="uid://cage2n7fxbf6i" path="res://scenes/games/31-card-game/CardHand.tscn" id="3_up2mq"]
+[ext_resource type="PackedScene" uid="uid://bqmmy24xoguw8" path="res://scenes/menus/hold_button_3d.tscn" id="5_623ke"]
+[ext_resource type="Script" uid="uid://dafa3m3lr5whc" path="res://scenes/games/31-card-game/turn_choices.gd" id="5_pgnns"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_cms4r"]
 
@@ -750,7 +752,7 @@ target_position = Vector3(0, 0, -2)
 collide_with_areas = true
 
 [node name="CardHand" parent="." node_paths=PackedStringArray("parent") instance=ExtResource("3_up2mq")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.93680847, 1.4241469)
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 1.01, 0.7)
 parent = NodePath("..")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
@@ -761,8 +763,16 @@ replication_config = SubResource("SceneReplicationConfig_66t23")
 script = ExtResource("3_66t23")
 player = NodePath("..")
 
-[node name="FinishRoundTimer" type="Timer" parent="InputSynchronizer"]
-wait_time = 1.5
-one_shot = true
+[node name="TurnChoices" type="Node3D" parent="." node_paths=PackedStringArray("player")]
+transform = Transform3D(-0.6, 0, -5.2453668e-08, 0, 0.6, 0, 5.2453668e-08, 0, -0.6, 0, 1.1, 1.018)
+script = ExtResource("5_pgnns")
+player = NodePath("..")
 
-[connection signal="timeout" from="InputSynchronizer/FinishRoundTimer" to="InputSynchronizer" method="finish_round"]
+[node name="Switch" parent="TurnChoices" instance=ExtResource("5_623ke")]
+transform = Transform3D(0.8660254, -0.12940952, 0.4829629, 0, 0.9659258, 0.25881904, -0.5, -0.22414386, 0.83651626, -0.9, 0, 0.25)
+
+[node name="Skip" parent="TurnChoices" instance=ExtResource("5_623ke")]
+transform = Transform3D(1, 0, 0, 0, 0.9659258, 0.25881904, 0, -0.25881904, 0.9659258, 0, 0, 0)
+
+[node name="Lock" parent="TurnChoices" instance=ExtResource("5_623ke")]
+transform = Transform3D(0.8660254, 0.12940952, -0.4829629, 0, 0.9659258, 0.25881904, 0.5, -0.22414386, 0.83651626, 0.9, 0, 0.25)
