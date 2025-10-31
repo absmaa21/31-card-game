@@ -123,9 +123,12 @@ func sync_all_cards(hand: CardHand) -> void:
 
 
 func next_player() -> void:
+	if current_player_turn:
+		print_debug("Combined Card score of player %d: %d" % [current_player_turn, get_combined_card_values(get_player_by_id(current_player_turn).card_hand)])
 	var new_player_turn: int = get_player_id_by_index(get_index_of_player_id(current_player_turn if current_player_turn else cur_dealer) + 1)
 	if new_player_turn == round_locked_by:
 		state_machine.switch_state("after")
+		return
 	current_player_turn = new_player_turn
 
 
@@ -185,3 +188,33 @@ func get_index_of_selected_card(hand: CardHand) -> int:
 		var card: Card = hand.cards_node.get_child(i)
 		if card and card.selected: return i
 	return -1
+
+
+func get_card_value(card: Card) -> int:
+	match card.face:
+		Card.FaceImage.JACK: return 10
+		Card.FaceImage.QUEEN: return 10
+		Card.FaceImage.KING: return 10
+		Card.FaceImage.ACE: return 11
+	# +2 because the enums starts with 0 and the lowest possible card value is two
+	return card.face + 2
+
+
+func get_combined_card_values(hand: CardHand) -> float:
+	var value_per_symbol: Dictionary[Card.Symbol, float] = {}
+	var amount_per_symbol: Dictionary[Card.Symbol, int] = {}
+
+	# Calculate combined values for each Symbol
+	for i: int in range(3):
+		var card: Card = hand.cards.get(i)
+		var old_value: float = value_per_symbol.get_or_add(card.symbol, 0)
+		value_per_symbol.set(card.symbol, old_value + get_card_value(card))
+		var old_amount: int = amount_per_symbol.get_or_add(card.symbol, 0)
+		amount_per_symbol.set(card.symbol, old_amount + 1)
+
+	# Get and return the highest combined value
+	for key: Card.Symbol in value_per_symbol.keys():
+		if amount_per_symbol.get(key) > 1:
+			return value_per_symbol.get(key)
+
+	return 0
