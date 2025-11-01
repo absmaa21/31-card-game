@@ -200,17 +200,25 @@ func get_card_value(card: Card) -> int:
 	return card.face + 2
 
 
+## 32 represents a fire (3x ace card)
 func get_combined_card_values(hand: CardHand) -> float:
 	var value_per_symbol: Dictionary[Card.Symbol, float] = {}
 	var amount_per_symbol: Dictionary[Card.Symbol, int] = {}
+	var amount_per_face: Dictionary[Card.FaceImage, int] = {}
 
 	# Calculate combined values for each Symbol
 	for i: int in range(3):
 		var card: Card = hand.cards.get(i)
+		amount_per_face.set(card.face, amount_per_face.get_or_add(card.face, 0) + 1)
 		var old_value: float = value_per_symbol.get_or_add(card.symbol, 0)
 		value_per_symbol.set(card.symbol, old_value + get_card_value(card))
 		var old_amount: int = amount_per_symbol.get_or_add(card.symbol, 0)
 		amount_per_symbol.set(card.symbol, old_amount + 1)
+
+	# First check for same face cards
+	for key: Card.FaceImage in amount_per_face.keys():
+		if amount_per_face.get(key) == 3:
+			return 32. if key == Card.FaceImage.ACE else 30.5
 
 	# Get and return the highest combined value
 	for key: Card.Symbol in value_per_symbol.keys():
