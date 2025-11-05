@@ -24,6 +24,9 @@ MessageBus="*res://services/MessageBus.gd"
 [debug]
 
 gdscript/warnings/unused_signal=0
+gdscript/warnings/untyped_declaration=1
+gdscript/warnings/inferred_declaration=1
+gdscript/warnings/missing_await=1
 
 [editor_plugins]
 
@@ -62,11 +65,15 @@ interact={
 ]
 }
 
+[physics]
+
+3d/run_on_separate_thread=true
+
 [project_time_traker]
 
 sections/show_sections=true
 sections/show_graphs=true
-afk/afk_timer=300
+afk/afk_timer=160
 
 [steam]
 
