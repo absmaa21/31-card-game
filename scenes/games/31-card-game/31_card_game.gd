@@ -226,3 +226,12 @@ func get_combined_card_values(hand: CardHand) -> float:
 			return value_per_symbol.get(key)
 
 	return 0
+
+
+## Returns the sum of the enum values of the given [param hand]
+func get_raw_combined_card_values(hand: CardHand) -> int:
+	var sum: int = 0
+	for i: int in range(3):
+		var card: Card = hand.cards.get(i)
+		sum += card.face
+	return sum
