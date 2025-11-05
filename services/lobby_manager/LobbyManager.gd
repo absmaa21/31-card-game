@@ -40,7 +40,7 @@ func refresh_lobby_members() -> void
 func get_lobby_data(key: String) -> String
 
 @abstract
-func set_lobby_data(key: String, value: String)
+func set_lobby_data(key: String, value: String) -> void
 
 @abstract
 func get_all_lobby_data(id: int) -> Dictionary[String, String]

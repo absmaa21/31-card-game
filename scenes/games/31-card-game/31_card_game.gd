@@ -16,7 +16,7 @@ const MAX_PLAYERS: int = 16
 @export var round_num: int = 0
 ## The player id which locked the current round.[br]
 ## After a player locks, every other player can make one last turn.
-@export var round_locked_by: int
+@export var round_locked_by: int = -1
 ## Player Id who started the round and gets to choose is 3 start cards.
 @export var cur_dealer: int:
 	set(value):
@@ -36,12 +36,14 @@ var cards_in_deck: Array[Card] = []
 
 
 func _ready() -> void:
+	state_machine.state_changed.connect(MessageBus.game_state_changed.emit)
 	initialize_game()
 
 
 func initialize_game() -> void:
 	if not multiplayer.is_server(): return
 	print("----- GAME '31 Card Game' -----")
+	round_locked_by = -1
 	create_players()
 	state_machine.switch_state("prepare")
 
@@ -167,6 +169,8 @@ func on_player_round_finish(from: int, self_index: int, table_index: int, lock_r
 		return
 
 	if lock_round:
+		if round_locked_by >= 0:
+			state_machine.switch_state("core")
 		print_debug("Round locked by %d" % from)
 		round_locked_by = from
 

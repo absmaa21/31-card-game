@@ -1,7 +1,7 @@
 extends Node3D
 class_name CardHand
 
-const CARD = preload("uid://b0q72fruoa26k")
+const CARD: PackedScene = preload("uid://b0q72fruoa26k")
 
 const SPACING: float = 0.25
 @export var parent: Node3D

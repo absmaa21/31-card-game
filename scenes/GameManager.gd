@@ -3,8 +3,8 @@ class_name GameManager
 
 const MULTIPLAYER_MENU: PackedScene = preload("uid://dbwnmtcemd8h7")
 const LOBBY_MENU: PackedScene = preload("uid://brnkgd403v5xi")
-const DIRECT_CONNECT_MENU = preload("uid://di1tj2dupr7f3")
-const _31_CARD_GAME = preload("uid://d1sldhlmobtoo")
+const DIRECT_CONNECT_MENU: PackedScene = preload("uid://di1tj2dupr7f3")
+const _31_CARD_GAME: PackedScene = preload("uid://d1sldhlmobtoo")
 
 
 signal scene_changed(type: SceneType)

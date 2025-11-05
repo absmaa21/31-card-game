@@ -39,6 +39,7 @@ func _ready() -> void:
 	anim_player.play("Sitting Idle")
 	head_bone = skeleton.find_bone("Head")
 	turn_choices.visible = false
+	MessageBus.game_state_changed.connect(_on_game_state_changed)
 	MessageBus.current_player_turn_changed.connect(_on_cur_player_turn_changed)
 	if corresponding_id == multiplayer.get_unique_id():
 		camera.make_current()
@@ -47,6 +48,16 @@ func _ready() -> void:
 	else:
 		input_sync.set_physics_process(false)
 		input_sync.set_process_input(false)
+
+
+func _on_game_state_changed(state: State) -> void:
+	if state.name.to_lower() == "after":
+		MessageBus.current_player_turn_changed.disconnect(_on_cur_player_turn_changed)
+		turn_choices.visible = false
+		return
+
+	if not MessageBus.current_player_turn_changed.is_connected(_on_cur_player_turn_changed):
+		MessageBus.current_player_turn_changed.connect(_on_cur_player_turn_changed)
 
 
 func _on_cur_player_turn_changed(id: int) -> void:
